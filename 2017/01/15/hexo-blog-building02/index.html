@@ -1,0 +1,977 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="WmZyovx7_k4oe5I9HnbJ36weySOfktdhxIwryJjNFaI" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="hexo," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="alexpdh's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="上篇文章介绍了hexo+GitHub搭建及一些基本优化，这篇文章主要介绍域名的绑定、第三方服务的添加">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于hexo+GitHub搭建个人博客（二）进阶">
+<meta property="og:url" content="http://alexpdh.com/2017/01/15/hexo-blog-building02/index.html">
+<meta property="og:site_name" content="alexpdh's blog">
+<meta property="og:description" content="上篇文章介绍了hexo+GitHub搭建及一些基本优化，这篇文章主要介绍域名的绑定、第三方服务的添加">
+<meta property="og:image" content="http://ojirj5wkr.bkt.clouddn.com/baiduyun_yumingjiexi.jpg">
+<meta property="og:image" content="http://ojirj5wkr.bkt.clouddn.com/baiduyun_yumingjiexi02.jpg">
+<meta property="og:image" content="http://ojirj5wkr.bkt.clouddn.com/duoshuo.jpg">
+<meta property="og:image" content="http://ojirj5wkr.bkt.clouddn.com/baidutongji.jpg">
+<meta property="og:image" content="http://ojirj5wkr.bkt.clouddn.com/swiftype.jpg">
+<meta property="og:image" content="http://ojirj5wkr.bkt.clouddn.com/swiftype02.jpg">
+<meta property="og:image" content="http://ojirj5wkr.bkt.clouddn.com/qiniuyun.jpg">
+<meta property="og:updated_time" content="2017-09-26T09:51:40.839Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于hexo+GitHub搭建个人博客（二）进阶">
+<meta name="twitter:description" content="上篇文章介绍了hexo+GitHub搭建及一些基本优化，这篇文章主要介绍域名的绑定、第三方服务的添加">
+<meta name="twitter:image" content="http://ojirj5wkr.bkt.clouddn.com/baiduyun_yumingjiexi.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","links_title":"友情链接","links":null,"MacTalk":"http://macshuo.com/","liaoxuefeng":"http://www.liaoxuefeng.com/"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://alexpdh.com/2017/01/15/hexo-blog-building02/"/>
+
+
+
+
+
+  <title> 基于hexo+GitHub搭建个人博客（二）进阶 | alexpdh's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9dc06432cf936b467fbc1592bb73673d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">alexpdh's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://alexpdh.com/2017/01/15/hexo-blog-building02/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="alexpdh">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/itdog.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="alexpdh's blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="alexpdh's blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                基于hexo+GitHub搭建个人博客（二）进阶
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-15T15:02:37+08:00">
+                2017-01-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/hexo/" itemprop="url" rel="index">
+                    <span itemprop="name">hexo</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上篇文章介绍了hexo+GitHub搭建及一些基本优化，这篇文章主要介绍域名的绑定、第三方服务的添加<br><a id="more"></a></p>
+<h2 id="个人域名绑定"><a href="#个人域名绑定" class="headerlink" title="个人域名绑定"></a>个人域名绑定</h2><p>GitHub默认使用的是对应的xxx.github.io的一个二级域名，想要给个性一点的话可以自己购买一个域名绑定。</p>
+<h3 id="域名购买"><a href="#域名购买" class="headerlink" title="域名购买"></a>域名购买</h3><p>域名购买平台很多，国内阿里的<a href="https://wanwang.aliyun.com/" target="_blank" rel="external">万网</a>，百度的<a href="https://cloud.baidu.com/product/bcd.html" target="_blank" rel="external">百度云</a>,下血本在百度买了个.com域名（[白眼]主要是刚好百度云在搞活动）。购买了之后需要实名认证之后才可以正式使用，一般两天内可以通过。</p>
+<h3 id="域名解析"><a href="#域名解析" class="headerlink" title="域名解析"></a>域名解析</h3><font color="black" size="4" face="“黑体”">认证通过后，我们就可以做域名解析了：</font>
+
+<ul>
+<li><p>先在Git bash或者doc窗口下 ping下自己的GitHub的地址（我的就是 alexpdh.github.io）获取到对应的ip地址。</p>
+</li>
+<li><p>登陆百度云，选择【产品服务】-&gt;【域名服务】-&gt;【域名管理】，点击域名后【操作】下的解析，点击【添加解析】<br><img src="http://ojirj5wkr.bkt.clouddn.com/baiduyun_yumingjiexi.jpg" alt="baiduyun_yumingjiexi"></p>
+</li>
+</ul>
+<p>主机记录可以添加三种域名前缀，想不想要www自己选择<br>www：解析后域名为 www.baidubceyun.cn<br>@：直接解析主域名 baidubceyun.cn<br><em>：泛解析，匹配其他所有域名 </em>.baidubceyun.cn<br><img src="http://ojirj5wkr.bkt.clouddn.com/baiduyun_yumingjiexi02.jpg" alt="baiduyun_yumingjiexi02"></p>
+<ul>
+<li><p>接下来在你hexo的的source目录下新建一个文件命名为CNAME没有后缀，打开将解析的域名添加到文件里，如果你上面配置的是www前缀的域名，这里就填写 www.xxx.com，对应就访问<a href="http://www.xxx.com" target="_blank" rel="external">http://www.xxx.com</a> ；如果配置的是@，这里填写 xxx.com，对应访问 <a href="http://xxx.com" target="_blank" rel="external">http://xxx.com</a> ；自由选择。</p>
+</li>
+<li><p>添加好之后用部署三步骤部署到GitHub，打开浏览器输入自己的域名访问。</p>
+<h2 id="添加第三方服务"><a href="#添加第三方服务" class="headerlink" title="添加第三方服务"></a>添加第三方服务</h2><h3 id="添加多说评论"><a href="#添加多说评论" class="headerlink" title="添加多说评论"></a>添加多说评论</h3></li>
+<li><p>注册并登陆<a href="http://duoshuo.com/" target="_blank" rel="external">多说</a>，点击【我要安装】填写对应的创建站点的信息。<br><img src="http://ojirj5wkr.bkt.clouddn.com/duoshuo.jpg" alt="duoshuo"></p>
+</li>
+<li><p>创建完成后，修改themes/_config.yml文件，把 duoshuo_shortname 改成之前设置的，就是.duoshuo.com前面那个二级域名</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Duoshuo ShortName</span></div><div class="line">duoshuo_shortname: alexpdh</div></pre></td></tr></table></figure>
+<h3 id="添加百度统计"><a href="#添加百度统计" class="headerlink" title="添加百度统计"></a>添加百度统计</h3><ul>
+<li>注册并登陆<a href="http://tongji.baidu.com/web/welcome/login" target="_blank" rel="external">百度统计</a>添加网站完成后，选择【管理】-&gt;【代码管理】-&gt;【代码获取】，复制统计脚本id</li>
+</ul>
+<p><img src="http://ojirj5wkr.bkt.clouddn.com/baidutongji.jpg" alt="baidutongji"></p>
+<ul>
+<li>创建完成后，修改themes/_config.yml文件，添加 baidu_analytics 字段，把值设置成自己的脚步id</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Baidu Analytics ID</span></div><div class="line">baidu_analytics: 9dc06432cf936b467fbc1592bb73673d</div></pre></td></tr></table></figure>
+<h3 id="添加-Swiftype-站内搜索"><a href="#添加-Swiftype-站内搜索" class="headerlink" title="添加 Swiftype 站内搜索"></a>添加 Swiftype 站内搜索</h3><ul>
+<li><sapn style="color:red;font-size:16px;">注意：新注册的swiftype账号过了试用期后就不能继续使用搜索服务了，老账号任然可以继续使用，可以使用 Local Search 配置很简单，参照next文档配置即可</sapn></li>
+</ul>
+<ul>
+<li>注册并登陆<a href="https://app.swiftype.com/" target="_blank" rel="external">Swiftype</a>,创建一个新的搜索引擎</li>
+</ul>
+<p><img src="http://ojirj5wkr.bkt.clouddn.com/swiftype.jpg" alt="swiftype"></p>
+<ul>
+<li>点击 Install Swiftype Search 获取key</li>
+</ul>
+<p><img src="http://ojirj5wkr.bkt.clouddn.com/swiftype02.jpg" alt="swiftype02"></p>
+<ul>
+<li>创建完成后，修改themes/_config.yml文件，添加 swiftype_key 字段，值为你的 swiftype 搜索引擎的 key</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Swiftype Search API Key</span></div><div class="line">swiftype_key: SELpQxw29CqCcMWn6235</div></pre></td></tr></table></figure>
+<h3 id="其他设置"><a href="#其他设置" class="headerlink" title="其他设置"></a>其他设置</h3><ul>
+<li>其他设置比如侧边栏、友情链接、菜单栏等请参考<a href="http://theme-next.iissnan.com/theme-settings.html" target="_blank" rel="external">next主题配置教程</a><h2 id="插入七牛云图片"><a href="#插入七牛云图片" class="headerlink" title="插入七牛云图片"></a>插入七牛云图片</h2></li>
+<li>注册<a href="http://www.qiniu.com/" target="_blank" rel="external">七牛云</a></li>
+<li>登陆七牛云后选择【对象存储】-&gt;【新建存储空间】</li>
+<li>进入创建的存储空间选择【内容管理】-&gt;【上传文件】选择要上传的文件，完成后关闭，然后点击对应图片【操作】下…【复制外链】<br><img src="http://ojirj5wkr.bkt.clouddn.com/qiniuyun.jpg" alt="qiniuyun"></li>
+<li>在你文章里需要图片处使用如下语法插入图片<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">![logo](复制七牛云的外链接)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<font color="black" size="4" face="“黑体”">自此，我们基本完成了整个hexo博客的搭建，有兴趣再继续优化的同学可以继续参考网上对应的文档进行优化。</font>
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/gongzhonghao.jpg" alt="alexpdh wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎扫一扫关注 程序猿pdh 公众号！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hexo/" rel="tag"># hexo</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/09/hexo-blog-building/" rel="next" title="基于hexo+GitHub搭建个人博客">
+                <i class="fa fa-chevron-left"></i> 基于hexo+GitHub搭建个人博客
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/05/http-Garbled/" rel="prev" title="记一次http接口调试问题">
+                记一次http接口调试问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/itdog.jpg"
+               alt="alexpdh" />
+          <p class="site-author-name" itemprop="name">alexpdh</p>
+          <p class="site-description motion-element" itemprop="description">你的时间在哪里，你的成就就在那里</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/alexpdh" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/alex1988520" target="_blank" title="weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/alexpdh-1988" target="_blank" title="zhihu">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#个人域名绑定"><span class="nav-number">1.</span> <span class="nav-text">个人域名绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#域名购买"><span class="nav-number">1.1.</span> <span class="nav-text">域名购买</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#域名解析"><span class="nav-number">1.2.</span> <span class="nav-text">域名解析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加第三方服务"><span class="nav-number">2.</span> <span class="nav-text">添加第三方服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加多说评论"><span class="nav-number">2.1.</span> <span class="nav-text">添加多说评论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加百度统计"><span class="nav-number">2.2.</span> <span class="nav-text">添加百度统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加-Swiftype-站内搜索"><span class="nav-number">2.3.</span> <span class="nav-text">添加 Swiftype 站内搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他设置"><span class="nav-number">2.4.</span> <span class="nav-text">其他设置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入七牛云图片"><span class="nav-number">3.</span> <span class="nav-text">插入七牛云图片</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">alexpdh</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+      <!-- UY END -->
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  <script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+  
+
+
+</body>
+</html>

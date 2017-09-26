@@ -1,0 +1,973 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="WmZyovx7_k4oe5I9HnbJ36weySOfktdhxIwryJjNFaI" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="日志," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="alexpdh's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="常使用的配置123456789101112131415161718192021222324252627282930313233343536373839log4j.rootLogger=DEBUG, console, log, error###Console ###log4j.appender.console = org.apache.log4j.ConsoleAppenderlog4j.appen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="log4j-properties 日志配置">
+<meta property="og:url" content="http://alexpdh.com/2017/05/03/log4j-properties-config/index.html">
+<meta property="og:site_name" content="alexpdh's blog">
+<meta property="og:description" content="常使用的配置123456789101112131415161718192021222324252627282930313233343536373839log4j.rootLogger=DEBUG, console, log, error###Console ###log4j.appender.console = org.apache.log4j.ConsoleAppenderlog4j.appen">
+<meta property="og:updated_time" content="2017-09-26T09:51:40.857Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="log4j-properties 日志配置">
+<meta name="twitter:description" content="常使用的配置123456789101112131415161718192021222324252627282930313233343536373839log4j.rootLogger=DEBUG, console, log, error###Console ###log4j.appender.console = org.apache.log4j.ConsoleAppenderlog4j.appen">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","links_title":"友情链接","links":null,"MacTalk":"http://macshuo.com/","liaoxuefeng":"http://www.liaoxuefeng.com/"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://alexpdh.com/2017/05/03/log4j-properties-config/"/>
+
+
+
+
+
+  <title> log4j-properties 日志配置 | alexpdh's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9dc06432cf936b467fbc1592bb73673d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">alexpdh's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://alexpdh.com/2017/05/03/log4j-properties-config/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="alexpdh">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/itdog.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="alexpdh's blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="alexpdh's blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                log4j-properties 日志配置
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-03T16:39:37+08:00">
+                2017-05-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程技术/" itemprop="url" rel="index">
+                    <span itemprop="name">编程技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="常使用的配置"><a href="#常使用的配置" class="headerlink" title="常使用的配置"></a>常使用的配置</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">log4j.rootLogger=DEBUG, console, log, error</div><div class="line"></div><div class="line">###Console ###</div><div class="line">log4j.appender.console = org.apache.log4j.ConsoleAppender</div><div class="line">log4j.appender.console.Threshold = DEBUG</div><div class="line">log4j.appender.console.Target = System.out</div><div class="line">log4j.appender.console.layout = org.apache.log4j.PatternLayout</div><div class="line">log4j.appender.console.layout.ConversionPattern = %d %p[%C:%L]- %m%n</div><div class="line"></div><div class="line">### log ###</div><div class="line">log4j.appender.log = org.apache.log4j.DailyRollingFileAppender</div><div class="line">log4j.appender.log.File = $&#123;catalina.base&#125;/logs/player/player.log</div><div class="line">log4j.appender.log.Append = true</div><div class="line">log4j.appender.log.Threshold = DEBUG</div><div class="line">log4j.appender.log.DatePattern='.'yyyy-MM-dd</div><div class="line">log4j.appender.log.layout = org.apache.log4j.PatternLayout</div><div class="line">log4j.appender.log.layout.ConversionPattern = %d %p[%c:%L] - %m%n</div><div class="line"></div><div class="line"></div><div class="line">### Error ###</div><div class="line">log4j.appender.error = org.apache.log4j.DailyRollingFileAppender</div><div class="line">log4j.appender.error.File = $&#123;catalina.base&#125;/logs/player/error.log</div><div class="line">log4j.appender.error.Append = true</div><div class="line">log4j.appender.error.Threshold = ERROR </div><div class="line">log4j.appender.error.DatePattern='.'yyyy-MM-dd</div><div class="line">log4j.appender.error.layout = org.apache.log4j.PatternLayout</div><div class="line">log4j.appender.error.layout.ConversionPattern =%d %p[%c:%L] - %m%n</div><div class="line"></div><div class="line">### SQL</div><div class="line">log4j.logger.com.ibatis=DEBUG</div><div class="line">log4j.logger.com.ibatis.common.jdbc.SimpleDataSource=DEBUG</div><div class="line">log4j.logger.com.ibatis.common.jdbc.ScriptRunner=DEBUG</div><div class="line">log4j.logger.com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate=DEBUG</div><div class="line">log4j.logger.java.sql.Connection=DEBUG</div><div class="line">log4j.logger.java.sql.Statement=DEBUG</div><div class="line">log4j.logger.java.sql.PreparedStatement=DEBUG</div><div class="line">log4j.logger.java.sql.ResultSet=INFO</div><div class="line">log4j.logger.org.apache=INFO</div></pre></td></tr></table></figure>
+<hr>
+<a id="more"></a>
+<h3 id="文件配置方法"><a href="#文件配置方法" class="headerlink" title="文件配置方法"></a>文件配置方法</h3><ul>
+<li>根 Logger 配置</li>
+</ul>
+<blockquote>
+<p>log4j.rootLogger = [ level ] , appenderName, appenderName, …</p>
+</blockquote>
+<p>level 是日志记录优先级别，从高到低依次为：off,fatal,error,warn,info,debug,all  </p>
+<blockquote>
+<p>off 最高等级，用于关闭所有日志记录。<br>fatal 指出每个严重的错误事件将会导致应用程序的退出。<br>error 指出虽然发生错误事件，但仍然不影响系统的继续运行。<br>warn 表明会出现潜在的错误情形。<br>info 一般和在粗粒度级别上，强调应用程序的运行全程。<br>debug 一般用于细粒度级别上，对调试应用程序非常有帮助。<br>all 最低等级，用于打开所有日志记录。</p>
+</blockquote>
+<ul>
+<li>配置日志信息输出目的地Appender</li>
+</ul>
+<blockquote>
+<p>log4j.appender.appenderName = fully.qualified.name.of.appender.class<br>log4j.appender.appenderName.option1 = value1<br>…<br>log4j.appender.appenderName.option = valueN</p>
+</blockquote>
+<p>其中，Log4j提供的appender有以下几种：</p>
+<blockquote>
+<p>org.apache.log4j.ConsoleAppender（控制台），<br>org.apache.log4j.FileAppender（文件），<br>org.apache.log4j.DailyRollingFileAppender（每天产生一个日志文件），<br>org.apache.log4j.RollingFileAppender（文件大小到达指定尺寸的时候产生一个新的文件），<br>org.apache.log4j.WriterAppender（将日志信息以流格式发送到任意指定的地方）</p>
+<p>ConsoleAppender选项属性<br> -Threshold = DEBUG:指定日志消息的输出最低层次<br> -ImmediateFlush = TRUE:默认值是true,所有的消息都会被立即输出<br> -Target = System.err:默认值System.out,输出到控制台(err为红色,out为黑色) </p>
+<p>FileAppender选项属性<br> -Threshold = INFO:指定日志消息的输出最低层次<br> -ImmediateFlush = TRUE:默认值是true,所有的消息都会被立即输出<br> -File = C:\log4j.log:指定消息输出到C:\log4j.log文件<br> -Append = FALSE:默认值true,将消息追加到指定文件中，false指将消息覆盖指定的文件内容<br> -Encoding = UTF-8:可以指定文件编码格式 </p>
+<p>DailyRollingFileAppender选项属性<br> -Threshold = WARN:指定日志消息的输出最低层次<br> -ImmediateFlush = TRUE:默认值是true,所有的消息都会被立即输出<br> -File = C:\log4j.log:指定消息输出到C:\log4j.log文件<br> -Append = FALSE:默认值true,将消息追加到指定文件中，false指将消息覆盖指定的文件内容<br> -DatePattern=’.’yyyy-ww:每周滚动一次文件,即每周产生一个新的文件。还可以按用以下参数:<br>              ‘.’yyyy-MM:每月<br>              ‘.’yyyy-ww:每周<br>              ‘.’yyyy-MM-dd:每天<br>              ‘.’yyyy-MM-dd-a:每天两次<br>              ‘.’yyyy-MM-dd-HH:每小时<br>              ‘.’yyyy-MM-dd-HH-mm:每分钟<br> -Encoding = UTF-8:可以指定文件编码格式 </p>
+<p>RollingFileAppender选项属性<br> -Threshold = ERROR:指定日志消息的输出最低层次<br> -ImmediateFlush = TRUE:默认值是true,所有的消息都会被立即输出<br> -File = C:/log4j.log:指定消息输出到C:/log4j.log文件<br> -Append = FALSE:默认值true,将消息追加到指定文件中，false指将消息覆盖指定的文件内容<br> -MaxFileSize = 100KB:后缀可以是KB,MB,GB.在日志文件到达该大小时,将会自动滚动.如:log4j.log.1<br> -MaxBackupIndex = 2:指定可以产生的滚动文件的最大数<br> -Encoding = UTF-8:可以指定文件编码格式 </p>
+</blockquote>
+<ul>
+<li>配置日志信息的格式（布局）</li>
+</ul>
+<blockquote>
+<p>log4j.appender.appenderName.layout = fully.qualified.name.of.layout.class<br>log4j.appender.appenderName.layout.option1 = value1<br>…<br>log4j.appender.appenderName.layout.option = valueN</p>
+</blockquote>
+<p>其中，Log4j提供的layout有以e几种：</p>
+<blockquote>
+<p>org.apache.log4j.HTMLLayout（以HTML表格形式布局），<br>org.apache.log4j.PatternLayout（可以灵活地指定布局模式），<br>org.apache.log4j.SimpleLayout（包含日志信息的级别和信息字符串），<br>org.apache.log4j.TTCCLayout（包含日志产生的时间、线程、类别等等信息）</p>
+</blockquote>
+<p>Log4J采用类似C语言中的printf函数的打印格式格式化日志信息，打印参数如下： %m 输出代码中指定的消息</p>
+<blockquote>
+<p> -X号: X信息输出时左对齐；<br> %p: 输出日志信息优先级，即DEBUG，INFO，WARN，ERROR，FATAL,<br> %d: 输出日志时间点的日期或时间，默认格式为ISO8601，也可以在其后指定格式，比如：%d{yyy MMM dd HH:mm:ss,SSS}，输出类似：2002年10月18日 22：10：28，921<br> %r: 输出自应用启动到输出该log信息耗费的毫秒数<br> %c: 输出日志信息所属的类目，通常就是所在类的全名<br> %t: 输出产生该日志事件的线程名<br> %l: 输出日志事件的发生位置，相当于%C.%M(%F:%L)的组合,包括类目名、发生的线程，以及在代码中的行数。举例：Testlog4.main (TestLog4.java:10)<br> %x: 输出和当前线程相关联的NDC(嵌套诊断环境),尤其用到像java servlets这样的多客户多线程的应用中。<br> %%: 输出一个”%”字符<br> %F: 输出日志消息产生时所在的文件名称<br> %L: 输出代码中的行号<br> %m: 输出代码中指定的消息,产生的日志具体信息<br> %n: 输出一个回车换行符，Windows平台为”/r/n”，Unix平台为”/n”输出日志信息换行</p>
+</blockquote>
+<p>可以在%与模式字符之间加上修饰符来控制其最小宽度、最大宽度、和文本的对齐方式。如：</p>
+<blockquote>
+<p>1)   %20c：指定输出category的名称，最小的宽度是20，如果category的名称小于20的话，默认的情况下右对齐。<br> 2)   %-20c:指定输出category的名称，最小的宽度是20，如果category的名称小于20的话，”-“号指定左对齐。<br> 3)   %.30c:指定输出category的名称，最大的宽度是30，如果category的名称大于30的话，就会将左边多出的字符截掉，但小于30的话也不会有空格。<br> 4)   %20.30c:如果category的名称小于20就补空格，并且右对齐，如果其名称长于30字符，就从左边较远输出的字符截掉。</p>
+</blockquote>
+<hr>
+<h3 id="代码中使用-SLF4J-插入日志"><a href="#代码中使用-SLF4J-插入日志" class="headerlink" title="代码中使用 SLF4J 插入日志"></a>代码中使用 SLF4J 插入日志</h3><p>代码中编写日志记录语句使用SLF4J的主要动机是让你的程序独立于任何特定的日志记录库，这些日志记录库可能需要与你现在配置不同的配置，而且还会引入更多令人头疼的维护问题。然而除了这个之外，SLF4J API还有一个让你使用SLF4J而不是用长期感兴趣的 Log4j 更让人信服的功能，也就是占位符功能，在代码中用{}来表示</p>
+<h4 id="使用SLF4J和Log4J来做日志"><a href="#使用SLF4J和Log4J来做日志" class="headerlink" title="使用SLF4J和Log4J来做日志"></a>使用SLF4J和Log4J来做日志</h4><p>需要引入的jar包  </p>
+<ul>
+<li>slf4j-api-1.7.7.jar - JAR for SLF4J API</li>
+<li>log4j-1.2.17.jar    - JAR for Log4J API</li>
+<li>slf4j-log4j12-1.7.7.jar - Log4J Adapter for SLF4J</li>
+</ul>
+<p>使用 maven 引入</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">	&lt;groupId&gt;log4j&lt;/groupId&gt;</div><div class="line">	&lt;artifactId&gt;log4j&lt;/artifactId&gt;</div><div class="line">	&lt;version&gt;1.2.17&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div><div class="line">			</div><div class="line">&lt;dependency&gt;</div><div class="line">	&lt;groupId&gt;org.slf4j&lt;/groupId&gt;</div><div class="line">	&lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;</div><div class="line">	&lt;version&gt;1.7.7&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div><div class="line"></div><div class="line">&lt;dependency&gt;</div><div class="line">	&lt;groupId&gt;org.slf4j&lt;/groupId&gt;</div><div class="line">	&lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;</div><div class="line">	&lt;version&gt;1.7.7&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="Spring中使用Log4j"><a href="#Spring中使用Log4j" class="headerlink" title="Spring中使用Log4j"></a>Spring中使用Log4j</h3><p>web.xml增加</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 设置根目录 --&gt;  </div><div class="line">&lt;context-param&gt;    </div><div class="line">   &lt;param-name&gt;webAppRootKey&lt;/param-name&gt;    </div><div class="line">   &lt;param-value&gt;webapp.root&lt;/param-value&gt;    </div><div class="line">&lt;/context-param&gt;    </div><div class="line"></div><div class="line">&lt;context-param&gt;  </div><div class="line">&lt;param-name&gt;log4jConfigLocation&lt;/param-name&gt;  </div><div class="line">&lt;param-value&gt;/WEB-INF/classes/log4j.properties&lt;/param-value&gt;  </div><div class="line">&lt;/context-param&gt;  </div><div class="line">&lt;!-- 3000表示 开一条watchdog线程每60秒扫描一下配置文件的变化;这样便于日志存放位置的改变 --&gt;  </div><div class="line">&lt;context-param&gt;    </div><div class="line">        &lt;param-name&gt;log4jRefreshInterval&lt;/param-name&gt;    </div><div class="line">        &lt;param-value&gt;3000&lt;/param-value&gt;    </div><div class="line">   &lt;/context-param&gt;   </div><div class="line">&lt;listener&gt;  </div><div class="line">    &lt;listener-class&gt;org.springframework.web.util.Log4jConfigListener&lt;/listener-class&gt;  </div><div class="line">&lt;/listener&gt;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/gongzhonghao.jpg" alt="alexpdh wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎扫一扫关注 程序猿pdh 公众号！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/日志/" rel="tag"># 日志</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/23/proxy-pattern/" rel="next" title="Java设计模式（五）：代理模式">
+                <i class="fa fa-chevron-left"></i> Java设计模式（五）：代理模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/09/factory-method-pattern/" rel="prev" title="Java设计模式（六）：工厂方法模式">
+                Java设计模式（六）：工厂方法模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/itdog.jpg"
+               alt="alexpdh" />
+          <p class="site-author-name" itemprop="name">alexpdh</p>
+          <p class="site-description motion-element" itemprop="description">你的时间在哪里，你的成就就在那里</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/alexpdh" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/alex1988520" target="_blank" title="weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/alexpdh-1988" target="_blank" title="zhihu">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#常使用的配置"><span class="nav-number">1.</span> <span class="nav-text">常使用的配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件配置方法"><span class="nav-number">2.</span> <span class="nav-text">文件配置方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码中使用-SLF4J-插入日志"><span class="nav-number">3.</span> <span class="nav-text">代码中使用 SLF4J 插入日志</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用SLF4J和Log4J来做日志"><span class="nav-number">3.1.</span> <span class="nav-text">使用SLF4J和Log4J来做日志</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring中使用Log4j"><span class="nav-number">4.</span> <span class="nav-text">Spring中使用Log4j</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">alexpdh</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+      <!-- UY END -->
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  <script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+  
+
+
+</body>
+</html>

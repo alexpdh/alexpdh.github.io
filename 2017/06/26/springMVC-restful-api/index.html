@@ -1,0 +1,996 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="WmZyovx7_k4oe5I9HnbJ36weySOfktdhxIwryJjNFaI" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="springMVC,restful," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="alexpdh's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="理解 RESTREST（Representational State Transfer）,中文翻译叫“表述性状态转移”。是 Roy Thomas Fielding  在他2000年的博士论文中提出的。它与传统的 SOAP Web 服务区别在于，REST关注的是要处理的数据，而 SOAP 主要关注行为和处理。要理解好 REST，根据其首字母拆分出的英文更容易理解。表述性（Representation">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于 springMVC 的 RESTful HTTP API 实践（服务端）">
+<meta property="og:url" content="http://alexpdh.com/2017/06/26/springMVC-restful-api/index.html">
+<meta property="og:site_name" content="alexpdh's blog">
+<meta property="og:description" content="理解 RESTREST（Representational State Transfer）,中文翻译叫“表述性状态转移”。是 Roy Thomas Fielding  在他2000年的博士论文中提出的。它与传统的 SOAP Web 服务区别在于，REST关注的是要处理的数据，而 SOAP 主要关注行为和处理。要理解好 REST，根据其首字母拆分出的英文更容易理解。表述性（Representation">
+<meta property="og:updated_time" content="2017-09-26T09:51:40.888Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于 springMVC 的 RESTful HTTP API 实践（服务端）">
+<meta name="twitter:description" content="理解 RESTREST（Representational State Transfer）,中文翻译叫“表述性状态转移”。是 Roy Thomas Fielding  在他2000年的博士论文中提出的。它与传统的 SOAP Web 服务区别在于，REST关注的是要处理的数据，而 SOAP 主要关注行为和处理。要理解好 REST，根据其首字母拆分出的英文更容易理解。表述性（Representation">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","links_title":"友情链接","links":null,"MacTalk":"http://macshuo.com/","liaoxuefeng":"http://www.liaoxuefeng.com/"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://alexpdh.com/2017/06/26/springMVC-restful-api/"/>
+
+
+
+
+
+  <title> 基于 springMVC 的 RESTful HTTP API 实践（服务端） | alexpdh's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9dc06432cf936b467fbc1592bb73673d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">alexpdh's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://alexpdh.com/2017/06/26/springMVC-restful-api/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="alexpdh">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/itdog.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="alexpdh's blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="alexpdh's blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                基于 springMVC 的 RESTful HTTP API 实践（服务端）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-26T22:25:18+08:00">
+                2017-06-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程技术/" itemprop="url" rel="index">
+                    <span itemprop="name">编程技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="理解-REST"><a href="#理解-REST" class="headerlink" title="理解 REST"></a>理解 REST</h4><p><strong>REST（Representational State Transfer）</strong>,中文翻译叫“表述性状态转移”。是 <a href="https://en.wikipedia.org/wiki/Roy_Fielding" target="_blank" rel="external"><span style="color:blue;font-size:15px;font-family:Microsoft YaHei;font-style:oblique;">Roy Thomas Fielding</span></a>  在他2000年的<a href="http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm" target="_blank" rel="external">博士论文</a>中提出的。它与传统的 SOAP Web 服务区别在于，REST关注的是要处理的数据，而 SOAP 主要关注行为和处理。要理解好 REST，根据其首字母拆分出的英文更容易理解。<br><strong>表述性（Representational）:</strong>对于 REST 来说，我们网络上的一个个URI资源可以用各种形式来表述，例如：XML、JSON或者HTML等。<br><strong>状态（State）：</strong>REST 更关注资源的状态而不是对资源采取的行为。<br><strong>转移（Transfer）：</strong>在网络传输过程中，REST 使资源以某种表述性形式从一个应用转移到另一个应用（如从服务端转移到客户端）。</p>
+<blockquote>
+<p>具体来说，REST 中存在行为，它的行为是通过 HTTP 表示操作的方法来定义的即：GET、POST、PUT、DELETE、PATCH；GET用来获取资源，POST用来新建资源（也可以用于更新资源），PUT用来更新资源，DELETE用来删除资源，PATCH用来更新资源。 基于 REST 这样的观点，我们需要避免使用 REST服务、REST Web服务 这样的称呼，这些称呼多少都带有一些强调行为的味道。<br><a id="more"></a></p>
+</blockquote>
+<hr>
+<h4 id="使用-RESTful-架构设计使用误区"><a href="#使用-RESTful-架构设计使用误区" class="headerlink" title="使用 RESTful 架构设计使用误区"></a>使用 RESTful 架构设计使用误区</h4><p><strong>RESTful 架构：</strong>是基于 REST 思想的时下比较流行的一种互联网软件架构。它结构清晰、符合标准、易于理解、扩展方便，所以正得到越来越多网站的采用。</p>
+<ul>
+<li>在没有足够了解 REST 的时候，我们很容易错误的将其视为 “基于 URL 的 Web 服务”，即将 REST 和 SOAP 一样，是一种远程过程调用（remote procedure call，RPC）的机制。但是 REST 和 RPC 几乎没有任何关系，RPC 是面向服务的，而 REST 是面向资源的，强调描述应用程序的事物和名词。这样很容易导致的一个结果是我们在设计 RESTful API 时，在 URI 中使用动词。例如：GET /user/getUser/123。正确写法应该是 GET /user/123。</li>
+</ul>
+<hr>
+<h4 id="使用-springMVC-支持-RESTful"><a href="#使用-springMVC-支持-RESTful" class="headerlink" title="使用 springMVC 支持 RESTful"></a>使用 springMVC 支持 RESTful</h4><p>在 spring 3.0 以后，spring 这对 springMVC 的一些增强功能对 RESTful 提供了良好的支持。在4.0后的版本中，spring 支持一下方式创建 REST 资源：</p>
+<ol>
+<li>控制器可以处理所有的 HTTP 方法，包含几个主要的 REST 方法：GET、POST、PUT、DELETE、PATCH；</li>
+<li>借助 @PathVariable 注解，控制器能够处理参数化的 URL（将变量输入作为 URL 的一部分）；</li>
+<li>借助 spring 的视图解析器，资源能够以多种方式进行表述，包括将模型数据渲染为 XML、JSON、Atom、已经 RSS 的 View 实现；</li>
+<li>可以使用 ContentNegotiatingViewResolver 来选择最适合客户端的表述；</li>
+<li>借助 @ResponseBody 注解和各种 HttpMethodConverter 实现，能够替换基于视图的渲染方式；</li>
+<li>类似地，@RequestBody 注解以及 HttpMethodConverter 实现可以将传入的 HTTP 数据转化为传入控制器处理方法的 Java 对象；</li>
+<li>借助 RestTemplate ，spring 应用能够方便地使用 REST 资源。</li>
+</ol>
+<h4 id="创建-RESTful-控制器"><a href="#创建-RESTful-控制器" class="headerlink" title="创建 RESTful 控制器"></a>创建 RESTful 控制器</h4><p>代码清单</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.pengdh.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.pengdh.entity.EmployeeEntity;</div><div class="line"><span class="keyword">import</span> com.pengdh.service.EmployeeService;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span>: 2017-06-27 0:08</div><div class="line"> */</div><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/employs"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EmployeeController</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="meta">@Autowired</span></div><div class="line">  <span class="keyword">private</span> EmployeeService empService;</div><div class="line"></div><div class="line">  <span class="meta">@GetMapping</span>(value = <span class="string">"/list"</span>, produces = &#123; <span class="string">"application/json;charset=UTF-8"</span> &#125;)</div><div class="line">  <span class="function"><span class="keyword">public</span> List&lt;EmployeeEntity&gt; <span class="title">employs</span><span class="params">(Integer offset,Integer limit)</span> </span>&#123;</div><div class="line">    offset = offset == <span class="keyword">null</span> ? <span class="number">0</span> : offset;</div><div class="line">    limit = limit == <span class="keyword">null</span> ? <span class="number">20</span> : limit;</div><div class="line">    <span class="keyword">return</span> empService.queryEmployList(offset,limit);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码的大致过程是当客户端发起对 “/employs” 的 GET 请求时，将调用服务端的 employs 方法，服务端通过注入的 EmployeeService 获取到一个 EmployeeEntity 列表，并将列表以 JSON 的表述形式返回给客户端。</p>
+<ul>
+<li>需要注意的是这里控制器本身并不关心资源如何表述。控制器以 Java 对象的方式来处理资源。控制器完成了它的工作以后，资源才会被转化成为适合客户端的形式。spring 提供了两种方法将资源的 java 表述形式转化为发送给客户端的表述形式：<ul>
+<li>内容协商（Content negotiation）：选择一个视图，它能够将模型渲染为呈现给客户端的表述形式；</li>
+<li>消息转化器（Message conversion）：通过一个消息转换器将控制器所返回的对象转换为呈现给客户端的表述形式。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>对于上述两种方式，第一种方式是通过 ContentNegotiatingViewResolver 作为 ViewResolver 的实现，主要是用于将资源渲染人类用户接口所需要的视图模型，如：HTML、JSP等也可以渲染。也可以针对不是人类客户端产生 JSON 或 XML，但是效果不是很理想，往往会产生一些不是客户端所需要的预期结果。如：客户端希望得到的响应可能是：{“name”:”zhangs”,”age”:”20”}。而模型是 key-value 组成的 map ，可能最终的响应是这样的：{“user”:{“name”:”zhangs”,”age”:”20”}}。基于内容协商的这些限制，这里我们主要讨论第二种方式：使用 Spring 的消息转换功能来生成资源表述。</p>
+</blockquote>
+<hr>
+<h4 id="使用-HTTP-消息转换器"><a href="#使用-HTTP-消息转换器" class="headerlink" title="使用 HTTP 消息转换器"></a>使用 HTTP 消息转换器</h4><p>这是一种更为直接的方式，消息转换器能够将控制器产生的数据转换为服务于客户端的表述形式。常用的一些消息转换器如：Jackson 的 MappingJacksonHttpMessageConverter 实现 JSON 消息和 Java 对象的互相转换； JAXB 库的 Jaxb2RootElementHttpMessageConverter 实现 XML 和 Java 对象的相互转换等。</p>
+<h5 id="通过-ResponseBody-注解实现响应体中返回资源状态。"><a href="#通过-ResponseBody-注解实现响应体中返回资源状态。" class="headerlink" title="通过 @ResponseBody 注解实现响应体中返回资源状态。"></a>通过 @ResponseBody 注解实现响应体中返回资源状态。</h5><p>正常情况下，当处理方法返回 Java 对象时，这个对象会放在模型中并在视图中渲染使用。但是，如果使用了消息转换功能的话，我们需要告诉 Spring 跳过正常的模型/视图流程，并使用消息转换器。实现这种方式最简单的方式是在控制器的方法上添加 @ResponseBody 注解。如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@GetMapping</span>(value = <span class="string">"/list"</span>, produces = &#123; <span class="string">"application/json;charset=UTF-8"</span> &#125;)</div><div class="line"><span class="meta">@ResponseBody</span></div><div class="line"><span class="function"><span class="keyword">public</span> List&lt;EmployeeEntity&gt; <span class="title">employs</span><span class="params">(Integer offset,Integer limit)</span> </span>&#123;</div><div class="line">  offset = offset == <span class="keyword">null</span> ? <span class="number">0</span> : offset;</div><div class="line">  limit = limit == <span class="keyword">null</span> ? <span class="number">20</span> : limit;</div><div class="line">  <span class="keyword">return</span> empService.queryEmployList(offset,limit);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里 @ResponseBody 注解会告知 Spring 将 List<employeeentity> 转换成 JSON 这样的表述形式作为资源发送给客户端。</employeeentity></p>
+<h5 id="使用-RequestBody-注解实现在请求体中接收资源状态"><a href="#使用-RequestBody-注解实现在请求体中接收资源状态" class="headerlink" title="使用 @RequestBody 注解实现在请求体中接收资源状态"></a>使用 @RequestBody 注解实现在请求体中接收资源状态</h5><p>使用 @RequestBody 注解可以告知 Spring 查找一个消息转换器，将来自客户端的资源表述转换为对象。如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@PostMapping</span>(value = <span class="string">"/employ"</span>, produces = &#123; <span class="string">"application/json;charset=UTF-8"</span> &#125;)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">saveEmploy</span><span class="params">(@RequestBody EmployeeEntity employeeEntity)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> empService.save(employeeEntity);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="使用-RestController-注解为控制器默认设置消息转换"><a href="#使用-RestController-注解为控制器默认设置消息转换" class="headerlink" title="使用 @RestController 注解为控制器默认设置消息转换"></a>使用 @RestController 注解为控制器默认设置消息转换</h5><p>Spring 4.0 引入了 @RestController 注解，在控制器是用 @RestController 代替 @Controller 的话，Spring 将会为该控制器的所有处理方法应用消息转换功能。我们不必在每个方法都添加 @ResponseBody 注解了。如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.pengdh.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.pengdh.entity.EmployeeEntity;</div><div class="line"><span class="keyword">import</span> com.pengdh.service.EmployeeService;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestBody;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span>: 2017-06-27 0:08</div><div class="line"> */</div><div class="line"><span class="meta">@RestController</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/employs"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EmployeeController</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="meta">@Autowired</span></div><div class="line">  <span class="keyword">private</span> EmployeeService empService;</div><div class="line"></div><div class="line">  <span class="meta">@GetMapping</span>(value = <span class="string">"/list"</span>, produces = &#123; <span class="string">"application/json;charset=UTF-8"</span> &#125;)</div><div class="line">  <span class="function"><span class="keyword">public</span> List&lt;EmployeeEntity&gt; <span class="title">employs</span><span class="params">(Integer offset,Integer limit)</span> </span>&#123;</div><div class="line">    offset = offset == <span class="keyword">null</span> ? <span class="number">0</span> : offset;</div><div class="line">    limit = limit == <span class="keyword">null</span> ? <span class="number">20</span> : limit;</div><div class="line">    <span class="keyword">return</span> empService.queryEmployList(offset,limit);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@PostMapping</span>(value = <span class="string">"/employ"</span>, produces = &#123; <span class="string">"application/json;charset=UTF-8"</span> &#125;)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">saveEmploy</span><span class="params">(@RequestBody EmployeeEntity employeeEntity)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> empService.save(employeeEntity);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="为客户端提供其他元数据"><a href="#为客户端提供其他元数据" class="headerlink" title="为客户端提供其他元数据"></a>为客户端提供其他元数据</h4><h5 id="使用-ResponseEntity-提供更多响应相关的元数据"><a href="#使用-ResponseEntity-提供更多响应相关的元数据" class="headerlink" title="使用 ResponseEntity 提供更多响应相关的元数据"></a>使用 ResponseEntity 提供更多响应相关的元数据</h5><p><strong>可以利用 ResponseEntity 给客户端返回状态码、设置响应头信息等，如给客户端提供返回码:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@GetMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, produces = &#123; <span class="string">"application/json;charset=UTF-8"</span> &#125;)</div><div class="line"><span class="function"><span class="keyword">public</span> ResponseEntity&lt;EmployeeEntity&gt; <span class="title">employById</span><span class="params">(@PathVariable <span class="keyword">long</span> id)</span> </span>&#123;</div><div class="line">  HttpStatus status = <span class="keyword">null</span>;</div><div class="line">  EmployeeEntity employeeEntity = empService.selectById(id);</div><div class="line">  <span class="keyword">if</span> (employeeEntity != <span class="keyword">null</span>) &#123;</div><div class="line">    status = HttpStatus.OK;</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    status = HttpStatus.NOT_FOUND;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;EmployeeEntity&gt;(employeeEntity, status);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>如果没有 if 判断，当根据 id 找不到对应的信息的时候，返回给客户端的状态码是默认的 HttpStatus.OK；当加上了判断条件后如果没有相应的信息返回则设置返回状态码为 HttpStatus.NOT_FOUND，最后通过 new 一个 ResponseEntity 会将查询信息和状态码一起返回到客户端。</p>
+</blockquote>
+<ul>
+<li>另外，ResponseEntity 还包含有 @ResponseBody 的语义，上面示例中并没有使用 @ResponseBody 注解，但是 ResponseEntity 的负载部分同样可以渲染到响应体中。</li>
+</ul>
+<h5 id="使用控制器异常处理器-ExceptionHandler-处理异常信息"><a href="#使用控制器异常处理器-ExceptionHandler-处理异常信息" class="headerlink" title="使用控制器异常处理器 @ExceptionHandler 处理异常信息"></a>使用控制器异常处理器 @ExceptionHandler 处理异常信息</h5><p>@ExceptionHandler 可以用到控制器的方法中，处理特定的异常：</p>
+<p><strong>创建响应包装类 ResponseResult</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.pengdh.dto;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.Serializable;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 响应结果封装类</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span>: 2017-06-29 0:34</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResponseResult</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">3371934618173052904L</span>;</div><div class="line">  <span class="keyword">private</span> String code;</div><div class="line">  <span class="keyword">private</span> String desc;</div><div class="line">  <span class="keyword">private</span> T data;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ResponseResult</span><span class="params">()</span> </span>&#123;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ResponseResult</span><span class="params">(String code, String desc)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.code = code;</div><div class="line">    <span class="keyword">this</span>.desc = desc;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ResponseResult</span><span class="params">(String code, T data)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.code = code;</div><div class="line">    <span class="keyword">this</span>.data = data;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getCode</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> code;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCode</span><span class="params">(String code)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.code = code;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getDesc</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> desc;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDesc</span><span class="params">(String desc)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.desc = desc;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> T <span class="title">getData</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> data;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setData</span><span class="params">(T data)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.data = data;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"ResponseResult&#123;"</span> +</div><div class="line">        <span class="string">"code='"</span> + code + <span class="string">'\''</span> +</div><div class="line">        <span class="string">", desc='"</span> + desc + <span class="string">'\''</span> +</div><div class="line">        <span class="string">", data="</span> + data +</div><div class="line">        <span class="string">'&#125;'</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>创建一个异常类 ResourceNotFoundException</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.pengdh.exception;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 资源未找到异常</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span>: 2017-06-29 0:55</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResourceNotFoundException</span> <span class="keyword">extends</span> <span class="title">RuntimeException</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">4880328265878141724L</span>;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ResourceNotFoundException</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ResourceNotFoundException</span><span class="params">(String message)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>(message);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ResourceNotFoundException</span><span class="params">(String message, Throwable cause)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>(message, cause);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>控制器 EmployeeController </strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.pengdh.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.pengdh.dto.ResponseResult;</div><div class="line"><span class="keyword">import</span> com.pengdh.entity.EmployeeEntity;</div><div class="line"><span class="keyword">import</span> com.pengdh.exception.ResourceNotFound;</div><div class="line"><span class="keyword">import</span> com.pengdh.service.EmployeeService;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.http.HttpStatus;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ExceptionHandler;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.PathVariable;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span>: 2017-06-27 0:08</div><div class="line"> */</div><div class="line"><span class="meta">@RestController</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/employs"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EmployeeController</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="meta">@Autowired</span></div><div class="line">  <span class="keyword">private</span> EmployeeService empService;</div><div class="line"></div><div class="line">  <span class="meta">@GetMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, produces = &#123; <span class="string">"application/json;charset=UTF-8"</span> &#125;)</div><div class="line">  <span class="function"><span class="keyword">public</span> ResponseResult&lt;EmployeeEntity&gt; <span class="title">employById</span><span class="params">(@PathVariable <span class="keyword">long</span> id)</span> </span>&#123;</div><div class="line">    ResponseResult&lt;EmployeeEntity&gt; result = <span class="keyword">new</span> ResponseResult&lt;EmployeeEntity&gt;();</div><div class="line">    HttpStatus status = <span class="keyword">null</span>;</div><div class="line">    EmployeeEntity employeeEntity = empService.selectById(id);</div><div class="line">    <span class="keyword">if</span> (employeeEntity == <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> ResourceNotFoundException(String.valueOf(id));</div><div class="line">    &#125;</div><div class="line">    result.setCode(String.valueOf(HttpStatus.OK));</div><div class="line">    result.setData(employeeEntity);</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@ExceptionHandler</span>(ResourceNotFoundException.class)</div><div class="line">  <span class="function"><span class="keyword">public</span> ResponseResult&lt;Object&gt; <span class="title">handlerException</span><span class="params">(ResourceNotFoundException e)</span> </span>&#123;</div><div class="line">    ResponseResult&lt;Object&gt; result = <span class="keyword">new</span> ResponseResult&lt;Object&gt;();</div><div class="line">    result.setCode(String.valueOf(HttpStatus.NOT_FOUND));</div><div class="line">    result.setDesc(e.getMessage());</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>从控制器代码可以看出，我们通过 @ExceptionHandler 能将控制器的方法的异常场景分出来单独处理。</p>
+</blockquote>
+<hr>
+<h5 id="使用-RestControllerAdvice-捕获所有-controller-抛出的异常"><a href="#使用-RestControllerAdvice-捕获所有-controller-抛出的异常" class="headerlink" title="使用 @RestControllerAdvice 捕获所有 controller 抛出的异常"></a>使用 @RestControllerAdvice 捕获所有 controller 抛出的异常</h5><p>@ ControllerAdvice是一个@ Component，用于定义@ ExceptionHandler的，@InitBinder和@ModelAttribute方法，适用于所有使用@ RequestMapping方法。 </p>
+<p><strong>新建一个异常处理类 GlobalExceptionHandler</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> com.pengdh.exception;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.pengdh.dto.ResponseResult;</div><div class="line"><span class="keyword">import</span> org.springframework.http.HttpStatus;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ExceptionHandler;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseStatus;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestControllerAdvice;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 全局异常处理器</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span>: 2017-07-11 0:00</div><div class="line"> */</div><div class="line"><span class="meta">@RestControllerAdvice</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GlobalExceptionHandler</span> </span>&#123;</div><div class="line">  <span class="meta">@ExceptionHandler</span>(ResourceNotFoundException.class)</div><div class="line">  <span class="meta">@ResponseStatus</span>(HttpStatus.INTERNAL_SERVER_ERROR)</div><div class="line">  <span class="function"><span class="keyword">public</span> ResponseResult&lt;Object&gt; <span class="title">handlerException</span><span class="params">(ResourceNotFoundException e)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ResponseResult&lt;Object&gt;(String.valueOf(HttpStatus.NOT_FOUND), e.getMessage());</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>控制器 EmployeeController</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> com.pengdh.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.pengdh.dto.ResponseResult;</div><div class="line"><span class="keyword">import</span> com.pengdh.entity.EmployeeEntity;</div><div class="line"><span class="keyword">import</span> com.pengdh.exception.ResourceNotFoundException;</div><div class="line"><span class="keyword">import</span> com.pengdh.service.EmployeeService;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.http.HttpStatus;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.PathVariable;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.PostMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestBody;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span>: 2017-06-27 0:08</div><div class="line"> */</div><div class="line"><span class="meta">@RestController</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/employs"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EmployeeController</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="meta">@Autowired</span></div><div class="line">  <span class="keyword">private</span> EmployeeService empService;</div><div class="line"></div><div class="line">  <span class="meta">@GetMapping</span>(value = <span class="string">"/list"</span>, produces = &#123; <span class="string">"application/json;charset=UTF-8"</span> &#125;)</div><div class="line">  <span class="function"><span class="keyword">public</span> List&lt;EmployeeEntity&gt; <span class="title">employs</span><span class="params">(Integer offset,Integer limit)</span> </span>&#123;</div><div class="line">    offset = offset == <span class="keyword">null</span> ? <span class="number">0</span> : offset;</div><div class="line">    limit = limit == <span class="keyword">null</span> ? <span class="number">20</span> : limit;</div><div class="line">    <span class="keyword">return</span> empService.queryEmployList(offset,limit);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@PostMapping</span>(value = <span class="string">"/employ"</span>, produces = &#123; <span class="string">"application/json;charset=UTF-8"</span> &#125;)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">saveEmploy</span><span class="params">(@RequestBody EmployeeEntity employeeEntity)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> empService.save(employeeEntity);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@GetMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, produces = &#123; <span class="string">"application/json;charset=UTF-8"</span> &#125;)</div><div class="line">  <span class="function"><span class="keyword">public</span> ResponseResult&lt;EmployeeEntity&gt; <span class="title">employById</span><span class="params">(@PathVariable <span class="keyword">long</span> id)</span> </span>&#123;</div><div class="line">    ResponseResult&lt;EmployeeEntity&gt; result = <span class="keyword">new</span> ResponseResult&lt;EmployeeEntity&gt;();</div><div class="line">    HttpStatus status = <span class="keyword">null</span>;</div><div class="line">    EmployeeEntity employeeEntity = empService.selectById(id);</div><div class="line">    <span class="keyword">if</span> (employeeEntity == <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> ResourceNotFoundException(String.valueOf(id));</div><div class="line">    &#125;</div><div class="line">    result.setCode(String.valueOf(HttpStatus.OK));</div><div class="line">    result.setData(employeeEntity);</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>从代码可以看出，我们将 controller 中的异常方法移到了一个新增的异常处理类。这样，如果其他 controller 类也抛出 ResourceNotFoundException 异常的时候，就会被 GlobalExceptionHandler 捕获。</p>
+</blockquote>
+<hr>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><ul>
+<li><a href="https://www.manning.com/books/spring-in-action-fourth-edition" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">Spring in action</span></a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2011/09/restful.html" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">理解RESTful架构</span></a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2014/05/restful_api.html" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">RESTful API 设计指南</span></a></li>
+<li><a href="http://novoland.github.io/%E8%AE%BE%E8%AE%A1/2015/08/17/Restful%20API%20%E7%9A%84%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83.html" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">Restful API 的设计规范</span></a></li>
+<li><a href="https://github.com/cocoajin/http-api-design-ZH_CN#%E8%BF%94%E5%9B%9E%E5%90%88%E9%80%82%E7%9A%84%E7%8A%B6%E6%80%81%E7%A0%81" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">HTTP API 设计指南</span></a></li>
+<li><a href="http://www.cnblogs.com/moonz-wu/p/4211626.html" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">好RESTful API的设计原则</span></a></li>
+<li><a href="http://blog.jobbole.com/41233/" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">RESTful API 设计最佳实践</span></a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/gongzhonghao.jpg" alt="alexpdh wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎扫一扫关注 程序猿pdh 公众号！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/springMVC/" rel="tag"># springMVC</a>
+          
+            <a href="/tags/restful/" rel="tag"># restful</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/24/adapter-pattern/" rel="next" title="Java设计模式（十四）：适配器模式">
+                <i class="fa fa-chevron-left"></i> Java设计模式（十四）：适配器模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/20/work-in-redis-use/" rel="prev" title="工作中一次使用 redis 存储操作数据的需求">
+                工作中一次使用 redis 存储操作数据的需求 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/itdog.jpg"
+               alt="alexpdh" />
+          <p class="site-author-name" itemprop="name">alexpdh</p>
+          <p class="site-description motion-element" itemprop="description">你的时间在哪里，你的成就就在那里</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/alexpdh" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/alex1988520" target="_blank" title="weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/alexpdh-1988" target="_blank" title="zhihu">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#理解-REST"><span class="nav-number">1.</span> <span class="nav-text">理解 REST</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-RESTful-架构设计使用误区"><span class="nav-number">2.</span> <span class="nav-text">使用 RESTful 架构设计使用误区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-springMVC-支持-RESTful"><span class="nav-number">3.</span> <span class="nav-text">使用 springMVC 支持 RESTful</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-RESTful-控制器"><span class="nav-number">4.</span> <span class="nav-text">创建 RESTful 控制器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-HTTP-消息转换器"><span class="nav-number">5.</span> <span class="nav-text">使用 HTTP 消息转换器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#通过-ResponseBody-注解实现响应体中返回资源状态。"><span class="nav-number">5.1.</span> <span class="nav-text">通过 @ResponseBody 注解实现响应体中返回资源状态。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用-RequestBody-注解实现在请求体中接收资源状态"><span class="nav-number">5.2.</span> <span class="nav-text">使用 @RequestBody 注解实现在请求体中接收资源状态</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用-RestController-注解为控制器默认设置消息转换"><span class="nav-number">5.3.</span> <span class="nav-text">使用 @RestController 注解为控制器默认设置消息转换</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为客户端提供其他元数据"><span class="nav-number">6.</span> <span class="nav-text">为客户端提供其他元数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用-ResponseEntity-提供更多响应相关的元数据"><span class="nav-number">6.1.</span> <span class="nav-text">使用 ResponseEntity 提供更多响应相关的元数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用控制器异常处理器-ExceptionHandler-处理异常信息"><span class="nav-number">6.2.</span> <span class="nav-text">使用控制器异常处理器 @ExceptionHandler 处理异常信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用-RestControllerAdvice-捕获所有-controller-抛出的异常"><span class="nav-number">6.3.</span> <span class="nav-text">使用 @RestControllerAdvice 捕获所有 controller 抛出的异常</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考文献"><span class="nav-number">7.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">alexpdh</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+      <!-- UY END -->
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  <script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+  
+
+
+</body>
+</html>
