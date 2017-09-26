@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://alexpdh.com/2017/03/03/strategy-pattern/</loc>
+    <lastmod>2017-09-26T15:09:08.756Z</lastmod>
+    <data>
+        <display>
+        <title>Java设计模式（二）：策略模式</title>
+        <pubTime>2017-03-03T05:49:45.000Z</pubTime>
+        
+        <tag>行为型模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="设计模式" url="http://alexpdh.com/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://alexpdh.com/2017/07/24/iterator-pattern/</loc>
     <lastmod>2017-09-26T14:52:18.287Z</lastmod>
     <data>
@@ -93,26 +113,6 @@
         <display>
         <title>Java设计模式（八）：模板方法模式</title>
         <pubTime>2017-05-21T12:14:14.000Z</pubTime>
-        
-        <tag>行为型模式</tag>
-         
-         
-           
-             
-              <breadCrumb title="设计模式" url="http://alexpdh.com/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://alexpdh.com/2017/09/26/strategy-pattern/</loc>
-    <lastmod>2017-09-26T09:51:40.901Z</lastmod>
-    <data>
-        <display>
-        <title>Java设计模式（二）：策略模式</title>
-        <pubTime>2017-09-26T09:51:40.900Z</pubTime>
         
         <tag>行为型模式</tag>
          
