@@ -70,7 +70,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="踩过的坑," />
+  <meta name="keywords" content="jvm," />
 
 
 
@@ -88,22 +88,27 @@
 
 
 
-<meta name="description" content="最近生产环境每隔一段时间会抛一个异常：
-12345678Exception in thread &quot;main&quot; javax.xml.stream.XMLStreamException: ParseError at [row,col]:[1,1] Message: JAXP00010001: The parser has encountered more than &quot;64000&quot; entity exp">
+<meta name="description" content="并发编程并发：指同时发生，在操作系统中，是指一个时间段中有几个程序都处于已启动运行到运行完毕之间，且这几个程序都是在同一个处理机上运行，但任一个时刻点上只有一个程序在处理机上运行。
+
+在并发编程中需要处理两个关键问题：线程之间如何通信及线程之间如何同步。
+通信：是指线程之间如何交换信息。在命令式编程中，线程之间的通信机制有两种：共享内存和消息传递。在共享内存的并发模型里，线程之间共享程序的公共状态">
 <meta property="og:type" content="article">
-<meta property="og:title" content="记一次生产环境因jdk的bug导致的异常">
-<meta property="og:url" content="http://alexpdh.com/2017/02/11/jdkbug/index.html">
+<meta property="og:title" content="理解 JVM：Java 内存模型之（基础）">
+<meta property="og:url" content="http://alexpdh.com/2017/09/17/java-memory-model-01/index.html">
 <meta property="og:site_name" content="alexpdh's blog">
-<meta property="og:description" content="最近生产环境每隔一段时间会抛一个异常：
-12345678Exception in thread &quot;main&quot; javax.xml.stream.XMLStreamException: ParseError at [row,col]:[1,1] Message: JAXP00010001: The parser has encountered more than &quot;64000&quot; entity exp">
-<meta property="og:image" content="http://ojirj5wkr.bkt.clouddn.com/yuanxiaojie01.jpg">
-<meta property="og:image" content="http://ojirj5wkr.bkt.clouddn.com/xiaojiuguan01.jpg">
-<meta property="og:updated_time" content="2017-09-26T09:51:40.853Z">
+<meta property="og:description" content="并发编程并发：指同时发生，在操作系统中，是指一个时间段中有几个程序都处于已启动运行到运行完毕之间，且这几个程序都是在同一个处理机上运行，但任一个时刻点上只有一个程序在处理机上运行。
+
+在并发编程中需要处理两个关键问题：线程之间如何通信及线程之间如何同步。
+通信：是指线程之间如何交换信息。在命令式编程中，线程之间的通信机制有两种：共享内存和消息传递。在共享内存的并发模型里，线程之间共享程序的公共状态">
+<meta property="og:image" content="http://ojirj5wkr.bkt.clouddn.com/image/hexo/java-memory-model.jpg">
+<meta property="og:updated_time" content="2017-10-08T14:37:40.627Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="记一次生产环境因jdk的bug导致的异常">
-<meta name="twitter:description" content="最近生产环境每隔一段时间会抛一个异常：
-12345678Exception in thread &quot;main&quot; javax.xml.stream.XMLStreamException: ParseError at [row,col]:[1,1] Message: JAXP00010001: The parser has encountered more than &quot;64000&quot; entity exp">
-<meta name="twitter:image" content="http://ojirj5wkr.bkt.clouddn.com/yuanxiaojie01.jpg">
+<meta name="twitter:title" content="理解 JVM：Java 内存模型之（基础）">
+<meta name="twitter:description" content="并发编程并发：指同时发生，在操作系统中，是指一个时间段中有几个程序都处于已启动运行到运行完毕之间，且这几个程序都是在同一个处理机上运行，但任一个时刻点上只有一个程序在处理机上运行。
+
+在并发编程中需要处理两个关键问题：线程之间如何通信及线程之间如何同步。
+通信：是指线程之间如何交换信息。在命令式编程中，线程之间的通信机制有两种：共享内存和消息传递。在共享内存的并发模型里，线程之间共享程序的公共状态">
+<meta name="twitter:image" content="http://ojirj5wkr.bkt.clouddn.com/image/hexo/java-memory-model.jpg">
 
 
 
@@ -131,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://alexpdh.com/2017/02/11/jdkbug/"/>
+  <link rel="canonical" href="http://alexpdh.com/2017/09/17/java-memory-model-01/"/>
 
 
 
 
 
-  <title> 记一次生产环境因jdk的bug导致的异常 | alexpdh's blog </title>
+  <title> 理解 JVM：Java 内存模型之（基础） | alexpdh's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -303,7 +308,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://alexpdh.com/2017/02/11/jdkbug/">
+  <link itemprop="mainEntityOfPage" href="http://alexpdh.com/2017/09/17/java-memory-model-01/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="alexpdh">
@@ -327,7 +332,7 @@
             
             
               
-                记一次生产环境因jdk的bug导致的异常
+                理解 JVM：Java 内存模型之（基础）
               
             
           </h1>
@@ -342,8 +347,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-11T21:23:03+08:00">
-                2017-02-11
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-17T20:32:17+08:00">
+                2017-09-17
               </time>
             
 
@@ -365,8 +370,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/杂记/" itemprop="url" rel="index">
-                    <span itemprop="name">杂记</span>
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -400,16 +405,49 @@
       
 
       
-        <p>最近生产环境每隔一段时间会抛一个异常：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Exception in thread <span class="string">"main"</span> javax.xml.stream.XMLStreamException: ParseError at [row,col]:[<span class="number">1</span>,<span class="number">1</span>] </div><div class="line">Message: JAXP00010001: The parser has encountered more than <span class="string">"64000"</span> entity expansions in <span class="keyword">this</span> document; <span class="keyword">this</span> is the limit imposed by the JDK. </div><div class="line">at com.sun.org.apache.xerces.internal.impl.XMLStreamReaderImpl.setInputSource(XMLStreamReaderImpl.java:<span class="number">219</span>) </div><div class="line">at com.sun.org.apache.xerces.internal.impl.XMLStreamReaderImpl.&lt;init&gt;(XMLStreamReaderImpl.java:<span class="number">189</span>) </div><div class="line">at com.sun.xml.internal.stream.XMLInputFactoryImpl.getXMLStreamReaderImpl(XMLInputFactoryImpl.java:<span class="number">277</span>) </div><div class="line">at com.sun.xml.internal.stream.XMLInputFactoryImpl.createXMLStreamReader(XMLInputFactoryImpl.java:<span class="number">129</span>) </div><div class="line">at com.sun.xml.internal.stream.XMLInputFactoryImpl.createXMLEventReader(XMLInputFactoryImpl.java:<span class="number">78</span>) </div><div class="line">at Main.main(Main.java:<span class="number">38</span>)</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<h3 id="元宵节快乐"><a href="#元宵节快乐" class="headerlink" title="元宵节快乐"></a>元宵节快乐</h3><p><img src="http://ojirj5wkr.bkt.clouddn.com/yuanxiaojie01.jpg" alt="yuanxiaojie"></p>
+        <h3 id="并发编程"><a href="#并发编程" class="headerlink" title="并发编程"></a>并发编程</h3><p><strong>并发：</strong>指同时发生，在操作系统中，是指一个时间段中有几个程序都处于已启动运行到运行完毕之间，且这几个程序都是在同一个处理机上运行，但任一个时刻点上只有一个程序在处理机上运行。</p>
 <ul>
-<li>在讨论问题之前来点题外话，今天是中国传统佳节-元宵节，祝大家元宵节快乐。在上周播出的歌手中。赵雷的一首《成都》彻底火了，同时故事中描述的 “走到玉林路的尽头，坐在小酒馆的门口” 中的小酒馆也火了，由于我现在住的地方离小酒馆比较近（大概半小时路程），于是今天一个人走到了玉林路口的尽头看到了歌中说的小酒馆，门口拍照的人源源不断，走进小酒馆里在白天的情况下居然满座，经营小酒馆的是一对夫妇，老板看起挺朴实的，老板娘大着肚子和丈夫一起忙前忙后。老板给我找了个拼桌的位置坐下要了瓶啤酒坐下，屋里只放赵雷的歌。比起七八十年代，什么事物在互联网信息时代下蹿红的速度相当惊人。<br><img src="http://ojirj5wkr.bkt.clouddn.com/xiaojiuguan01.jpg" alt="xiaojiuguan01"></li>
+<li>在并发编程中需要处理两个关键问题：线程之间如何通信及线程之间如何同步。<ol>
+<li>通信：是指线程之间如何交换信息。在命令式编程中，线程之间的通信机制有两种：共享内存和消息传递。在共享内存的并发模型里，线程之间共享程序的公共状态，线程之间通过写-读内存中的公共状态来隐式进行通信。在消息传递的并发模型里，线程之间没有公共状态，线程之间必须通过明确的发送消息来显式进行通信。</li>
+<li>同步：是指程序用于控制不同线程之间操作发生相对顺序的机制。在共享内存并发模型里，同步是显式进行的。程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。在消息传递的并发模型里，由于消息的发送必须在消息的接收之前，因此同步是隐式进行的。在 Java 中，可以通过 volatile，synchronized, 锁等方式实现同步。 </li>
+</ol>
+</li>
 </ul>
-<h3 id="回到正题"><a href="#回到正题" class="headerlink" title="回到正题"></a>回到正题</h3><p>异常的大概意思是“解析器解析xml文档时文档实体扩展个数超过了 “640000” 个”，抛这个异常的是我们的一个专门接收中音给我们分发音乐素材的程序。系统采用的是基于CXF的WebService接口程序。有用基于SOAP传输的xml形式的接口数据，也有rest设计传输的json格式的数据。不过报的这个异常是xml形式的接口抛出来的,它限制了在读取xml文档时共享实体的个数不能大于640000个，影响的jdk版本有 5.0u55，6u65，7u45，8</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</div><div class="line"> </div><div class="line"><span class="keyword">import</span> javax.xml.stream.XMLInputFactory;</div><div class="line"> </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line"> </div><div class="line">        String xml = <span class="string">"&lt;?xml version=\"1.0\"?&gt;&lt;test&gt;&lt;/test&gt;"</span>;</div><div class="line"> </div><div class="line">        XMLInputFactory factory = XMLInputFactory.newInstance();</div><div class="line"> </div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">64001</span>; i++) &#123;</div><div class="line"> </div><div class="line">            ByteArrayInputStream stream = <span class="keyword">new</span> ByteArrayInputStream(xml.getBytes());</div><div class="line">            factory.createXMLEventReader(stream);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>我们服务器的jdk版本刚好是这个版本的。这个bug在 1.7.0_51 版本之后得到的修复，因此只需将jdk版本升级到 1.7.0_51 之后的版本就可以解决这个问题了。下面是官网上对这个bug描述。<br><a href="https://bugs.openjdk.java.net/browse/JDK-8028111" target="_blank" rel="external">https://bugs.openjdk.java.net/browse/JDK-8028111</a></p>
+<a id="more"></a>
+<hr>
+<h3 id="Java-内存模型"><a href="#Java-内存模型" class="headerlink" title="Java 内存模型"></a>Java 内存模型</h3><p>Java的并发采用的是共享内存模型，Java线程之间的通信总是隐式进行，整个通信过程对程序员完全透明。Java 虚拟机规范中试图定义一种 Java 内存模型（Java Model Memory，JMM）来屏蔽掉各种硬件和操作系统的内存访问差异，以实现让 Java 程序在各种平台下都能达到一致的内存访问效果。</p>
+<h4 id="主内存与工作内存"><a href="#主内存与工作内存" class="headerlink" title="主内存与工作内存"></a>主内存与工作内存</h4><p>Java 内存模型的主要目标是定义程序中各个变量的访问规则，即在虚拟机中将变量存储到内存和从内存中取出变量这样的底层细节。此处的变量（Variables）与 Java 编程中所说的变量有所区别，它包括了实例字段、静态字段和构成数组对象的元素，但不包括局部变量与方法参数，因为后者是线程私有的，不会被共享，自然不会存在竞争问题。</p>
+<p>Java 内存模型规定了所有的变量都存储在主内存（Main Memory）中，每条线程还有自己的工作内存（Working Memory），线程的工作内存中保存被该线程使用到的变量在主内存中变量的副本，线程对变量的多有操作（读取、赋值等）都必须在工作内存中进行，而不能直接读写主内存中的变量。不同的线程之间也无法直接访问对方工作内存中的变量，线程间变量的值得传递均需要通过主内存来完成，线程、主内存、工作内存三者的交互关系如图所示：</p>
+<p><img src="http://ojirj5wkr.bkt.clouddn.com/image/hexo/java-memory-model.jpg" alt="java-memory-model.jpg"></p>
+<p>这里所讲的主内存、工作内存与 Java 内存区域中的 Java 堆、栈、方法区等并不是同一个层次的内存划分，这两者基本上没有关系，如果两者一定要勉强对应起来，那从变量、主内存、工作内存的定义来看，主内存主要对应于 Java 堆中的对象实例数据部分，而工作内存则对应于虚拟机栈中的部分区域。从更低层次上说，主内存就直接对应于物理硬件内存，而为了获取更好的运行速度，虚拟机可能会让工作内存优先存储于寄存器和高速缓存中，因为程序运行时注意访问读写的是工作内存。</p>
+<h4 id="内存间交互操作"><a href="#内存间交互操作" class="headerlink" title="内存间交互操作"></a>内存间交互操作</h4><p>Java 内存模型定义了 8 种操作来完成主内存与工作内存之间具体的交互协议，即一个变量如何从主内存拷贝到工作内存、如何从工作内存同步会主内存的。虚拟机是现实必须要保证下面提及的每一种操作都是原子的、不可再分的。</p>
+<ol>
+<li>lock（锁定）：作用于主内存的变量，它把一个变量标识为一条线程独占的状态。</li>
+<li>unlock（解锁）：作用于主内存的变量，它把一个处于锁定状态的变量释放出来，释放后的变量才可以被其它线程锁定。</li>
+<li>read（读取）：作用于主内存变量，它把一个变量的值从主内存传输到线程的工作内存中，以便随后的 load 动作使用。</li>
+<li>load（载入）：作用于工作内存的变量，它把 read 操作从主内存中得到的变量植入工作内存的变量副本中。</li>
+<li>use（使用）：作用于工作内存的变量，它把工作内存中一个变量的值传递给执行引擎，每当虚拟机遇到一个需要使用到变量的值的字节码指令时将会执行这个操作。</li>
+<li>assign（赋值）：作用于工作内存的变量，它把一个从执行引擎接收到的值赋给工作内存的变量，每当虚拟机遇到一个给变量赋值的字节码指令时执行这个操作。</li>
+<li>store（存储）：作用于工作内存的变量，它把工作内存中一个变量的值传送到主内存中，以便随后的 write 操作使用。</li>
+<li>write（写入）：作用于主内存的变量，它把 store 操作从工作内存得到的变量的值放入主内存的变量中。</li>
+</ol>
+<p>Java 内存模型还规定了在执行上述 8 种基本操作是必须满足如下规则：</p>
+<ul>
+<li>如果把一个变量从主内存复制到工作内存，那就要顺序地执行 read 和 load 操作。</li>
+<li>如果把一个变量从工作内存同步回主内存，那就要顺序地执行 store 和 write 操作。</li>
+<li>不允许 read 和 load、store 和 write 操作之一单独出现，即不允许一个变量从主内存读取了但工作内存不接受，或者从工作内存发起回写了但主内存不接受的情况出现。</li>
+<li>不允许一个线程丢弃它的最近的 assign 操作，即变量在工作内存中改变了之后必须把该变化同步回主内存。</li>
+<li>不允许一个线程无原因地（没有发生任何 assign 操作）把数据从线程的工作内存同步回主内存中。</li>
+<li>一个新的变量只能在主内存中“诞生”，不允许在工作内存中直接使用一个未被初始化（load 和 assign）的变量，换句话说，就是对一个变量实施 use、store 操作之前，必须先执行过了 assign 和 load 操作。</li>
+<li>一个变量在同一个时刻只允许一个线程对其进行 lock 操作，但 lock 操作可以被同一条线程重复执行多次，多次执行 lock 后，只有执行相同次数的 unlock 操作，变量才会被解锁。</li>
+<li>如果对一个变量执行 lock 操作，那将会清空工作内存中此变量的值，在执行引擎使用这个变量前，需要重新执行 load 或 assign 操作初始化变量的值。</li>
+<li>对一个变量执行 unlock 操作之前，必须先把此变量同步回主内存中（执行 store、write 操作）。</li>
+</ul>
+<hr>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><ul>
+<li><span style="color:red;font-size:14px;font-family:Microsoft YaHei;">深入理解 Java 虚拟机</span></li>
+<li><a href="http://www.infoq.com/cn/articles/java-memory-model-1" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">http://www.infoq.com/cn/articles/java-memory-model-1</span></a></li>
+</ul>
 
       
     </div>
@@ -438,7 +476,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/踩过的坑/" rel="tag"># 踩过的坑</a>
+            <a href="/tags/jvm/" rel="tag"># jvm</a>
           
         </div>
       
@@ -447,8 +485,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/02/05/http-Garbled/" rel="next" title="记一次http接口调试问题">
-                <i class="fa fa-chevron-left"></i> 记一次http接口调试问题
+              <a href="/2017/09/16/jvm-memory/" rel="next" title="理解 JVM：JVM 内存模型">
+                <i class="fa fa-chevron-left"></i> 理解 JVM：JVM 内存模型
               </a>
             
           </div>
@@ -457,8 +495,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/02/18/2017-reading-plan/" rel="prev" title="2017目标书单">
-                2017目标书单 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/10/11/vagrant-install-configure/" rel="prev" title="windows 环境下 vagrant 安装配置">
+                windows 环境下 vagrant 安装配置 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -624,7 +662,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#元宵节快乐"><span class="nav-number">1.</span> <span class="nav-text">元宵节快乐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回到正题"><span class="nav-number">2.</span> <span class="nav-text">回到正题</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#并发编程"><span class="nav-number">1.</span> <span class="nav-text">并发编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-内存模型"><span class="nav-number">2.</span> <span class="nav-text">Java 内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#主内存与工作内存"><span class="nav-number">2.1.</span> <span class="nav-text">主内存与工作内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存间交互操作"><span class="nav-number">2.2.</span> <span class="nav-text">内存间交互操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
 
           </div>
