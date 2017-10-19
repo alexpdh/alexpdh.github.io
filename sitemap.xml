@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://alexpdh.com/2017/02/05/http-Garbled/</loc>
+    
+    <lastmod>2017-10-19T15:43:33.856Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://alexpdh.com/2017/10/11/vagrant-install-configure/</loc>
     
     <lastmod>2017-10-11T13:38:41.852Z</lastmod>
@@ -201,13 +208,6 @@
     <loc>http://alexpdh.com/2017/08/14/interpreter-pattern/</loc>
     
     <lastmod>2017-09-26T09:51:40.844Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://alexpdh.com/2017/02/05/http-Garbled/</loc>
-    
-    <lastmod>2017-09-26T09:51:40.842Z</lastmod>
     
   </url>
   
