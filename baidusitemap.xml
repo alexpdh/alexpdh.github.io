@@ -5,10 +5,10 @@
     
   <url>
     <loc>http://alexpdh.com/2017/09/17/java-memory-model-01/</loc>
-    <lastmod>2017-11-11T15:43:09.586Z</lastmod>
+    <lastmod>2017-11-11T15:45:49.480Z</lastmod>
     <data>
         <display>
-        <title>理解 JVM：Java 内存模型之——基础</title>
+        <title>理解 JVM：Java 内存模型（一）——基础</title>
         <pubTime>2017-09-17T12:32:17.000Z</pubTime>
         
         <tag>jvm</tag>
