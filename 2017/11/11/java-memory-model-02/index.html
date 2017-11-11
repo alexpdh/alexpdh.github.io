@@ -88,19 +88,31 @@
 
 
 
-<meta name="description" content="Java 虚拟机在执行 Java 程序的过程中会把它所管理的内存划分为若干个不同的数据区域，这些区域都有各自的用途，以及创建和销毁的时间。有的区域随着虚拟机进程的启动就存在了， 有的区域则是依赖用户线程。根据《Java虚拟机规范（第二版）》，Java 虚拟机所管理的内存包含以下的几个区域。">
+<meta name="description" content="概述
+java 内存模型的核心是围绕着在并发过程中如何处理原子性、可见性、有序性这3个特性来展开的，它们是多线程编程的核心。
+
+
+原子性（Atomicity）：是指一个操作是不可中断的，即使是多个线程同时执行的情况下，一个操作一旦开始，就不会被其它线程干扰。对于基本类型的读写操作基本都具有原子性的（在32位操作系统中 long 和 double 类型数据的读写不是原子性的，因为它们有64位）。
+可">
 <meta property="og:type" content="article">
-<meta property="og:title" content="理解 JVM：JVM 内存模型">
-<meta property="og:url" content="http://alexpdh.com/2017/09/16/jvm-memory/index.html">
+<meta property="og:title" content="理解 JVM：Java 内存模型（二）——volatile">
+<meta property="og:url" content="http://alexpdh.com/2017/11/11/java-memory-model-02/index.html">
 <meta property="og:site_name" content="alexpdh's blog">
-<meta property="og:description" content="Java 虚拟机在执行 Java 程序的过程中会把它所管理的内存划分为若干个不同的数据区域，这些区域都有各自的用途，以及创建和销毁的时间。有的区域随着虚拟机进程的启动就存在了， 有的区域则是依赖用户线程。根据《Java虚拟机规范（第二版）》，Java 虚拟机所管理的内存包含以下的几个区域。">
-<meta property="og:image" content="http://ojirj5wkr.bkt.clouddn.com/image/hexo/java-memory.jpg">
-<meta property="og:image" content="http://ojirj5wkr.bkt.clouddn.com/image/hexo/java-heap.jpg">
-<meta property="og:updated_time" content="2017-09-26T09:51:40.855Z">
+<meta property="og:description" content="概述
+java 内存模型的核心是围绕着在并发过程中如何处理原子性、可见性、有序性这3个特性来展开的，它们是多线程编程的核心。
+
+
+原子性（Atomicity）：是指一个操作是不可中断的，即使是多个线程同时执行的情况下，一个操作一旦开始，就不会被其它线程干扰。对于基本类型的读写操作基本都具有原子性的（在32位操作系统中 long 和 double 类型数据的读写不是原子性的，因为它们有64位）。
+可">
+<meta property="og:updated_time" content="2017-11-11T19:17:23.043Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="理解 JVM：JVM 内存模型">
-<meta name="twitter:description" content="Java 虚拟机在执行 Java 程序的过程中会把它所管理的内存划分为若干个不同的数据区域，这些区域都有各自的用途，以及创建和销毁的时间。有的区域随着虚拟机进程的启动就存在了， 有的区域则是依赖用户线程。根据《Java虚拟机规范（第二版）》，Java 虚拟机所管理的内存包含以下的几个区域。">
-<meta name="twitter:image" content="http://ojirj5wkr.bkt.clouddn.com/image/hexo/java-memory.jpg">
+<meta name="twitter:title" content="理解 JVM：Java 内存模型（二）——volatile">
+<meta name="twitter:description" content="概述
+java 内存模型的核心是围绕着在并发过程中如何处理原子性、可见性、有序性这3个特性来展开的，它们是多线程编程的核心。
+
+
+原子性（Atomicity）：是指一个操作是不可中断的，即使是多个线程同时执行的情况下，一个操作一旦开始，就不会被其它线程干扰。对于基本类型的读写操作基本都具有原子性的（在32位操作系统中 long 和 double 类型数据的读写不是原子性的，因为它们有64位）。
+可">
 
 
 
@@ -128,13 +140,13 @@
 
 
 
-  <link rel="canonical" href="http://alexpdh.com/2017/09/16/jvm-memory/"/>
+  <link rel="canonical" href="http://alexpdh.com/2017/11/11/java-memory-model-02/"/>
 
 
 
 
 
-  <title> 理解 JVM：JVM 内存模型 | alexpdh's blog </title>
+  <title> 理解 JVM：Java 内存模型（二）——volatile | alexpdh's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -300,7 +312,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://alexpdh.com/2017/09/16/jvm-memory/">
+  <link itemprop="mainEntityOfPage" href="http://alexpdh.com/2017/11/11/java-memory-model-02/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="alexpdh">
@@ -324,7 +336,7 @@
             
             
               
-                理解 JVM：JVM 内存模型
+                理解 JVM：Java 内存模型（二）——volatile
               
             
           </h1>
@@ -339,8 +351,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-16T18:41:41+08:00">
-                2017-09-16
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-11T23:49:24+08:00">
+                2017-11-11
               </time>
             
 
@@ -397,57 +409,33 @@
       
 
       
-        <blockquote>
-<p>Java 虚拟机在执行 Java 程序的过程中会把它所管理的内存划分为若干个不同的数据区域，这些区域都有各自的用途，以及创建和销毁的时间。有的区域随着虚拟机进程的启动就存在了， 有的区域则是依赖用户线程。根据《Java虚拟机规范（第二版）》，Java 虚拟机所管理的内存包含以下的几个区域。</p>
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
+<p>java 内存模型的核心是围绕着在并发过程中如何处理原子性、可见性、有序性这3个特性来展开的，它们是多线程编程的核心。</p>
 </blockquote>
-<p><img src="http://ojirj5wkr.bkt.clouddn.com/image/hexo/java-memory.jpg" alt="java-memory.jpg"></p>
+<ul>
+<li><strong>原子性（Atomicity）：</strong>是指一个操作是不可中断的，即使是多个线程同时执行的情况下，一个操作一旦开始，就不会被其它线程干扰。对于基本类型的读写操作基本都具有原子性的（在32位操作系统中 long 和 double 类型数据的读写不是原子性的，因为它们有64位）。</li>
+<li><strong>可见性（Visibility）：</strong>是指在多线程环境下，当一个线程修改了某一个共享变量的值，其它线程能够立刻知道这个修改。</li>
+<li><strong>有序性（Ordering）：</strong>是指程序的执行顺序是按照代码的先后顺序执行的；对于这句话如果在单线程中所有的操作都是有序的，但是在多线程环境下，一个线程的操作相对于另外一个线程的操作是无序的。</li>
+</ul>
 <a id="more"></a>
 <hr>
-<h3 id="运行时数据区（Runtime-Data-Area）"><a href="#运行时数据区（Runtime-Data-Area）" class="headerlink" title="运行时数据区（Runtime Data Area）"></a>运行时数据区（Runtime Data Area）</h3><blockquote>
-<p>由上图可以看出，在运行时数据区中：虚拟机栈、本地方法栈、程序计数器属于<span style="color:red;font-size:16px;font-style:oblique;">线程隔离的数据区，是单个线程私有的，它们的生命周期与线程相同</span>；而方法区和堆属于<span style="color:red;font-size:16px;font-style:oblique;">所有线程共享的数据区，是所有线程共享的</span>。</p>
+<h3 id="关键字-volatile"><a href="#关键字-volatile" class="headerlink" title="关键字 volatile"></a>关键字 volatile</h3><blockquote>
+<p>volatile 修饰的变量保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。因为当对普通变量进行读写的时候，每个线程先从内存拷贝变量到CPU缓存中。如果计算机有多个CPU，每个线程可能在不同的CPU上被处理，这意味着每个线程可以拷贝到不同的CPU cache中。而volatile修饰的变量，JVM保证了每次读变量都从内存中读，跳过CPU cache这一步。volatile修饰的变量禁止进行指令重排序，所以能在一定程度上保证有序性。只能保证该变量所在的语句还是原来的位置，并不能保证该语句之前或之后的语句是否被打乱。</p>
 </blockquote>
-<hr>
-<h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4><p>程序计数器（Program Counter Register）是最小的一块内存区域，它可以看作是当前线程所执行的字节码的行号指示器。在虚拟机的概念模型里，字节码解释器工作时就是通过改变这个计数器的值来选取吓一跳需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个计数器来完成。在多线程环境下，当某个线程失去处理器执行权时，需要记录该线程被切换出去时所执行的程序位置。从而方便该线程被切换回来(重新被处理器处理)时能恢复到当初的执行位置，因此每个线程都需要有一个独立的程序计数器。各个线程的程序计数器互不影响，并且独立存储。</p>
-<ol>
-<li>如果线程正在执行一个 java 方法时，这个程序计数器记录的时正在执行的虚拟机字节码指令的地址；</li>
-<li>如果正在执行的是 Native 方法，这个计数器的值则为空（Undefined）；</li>
-<li>此内存区域是唯一一个在 java 虚拟机规范中没有规定任何 OutOfMemoryError 情况的区域。</li>
+<h4 id="volatile-的特性"><a href="#volatile-的特性" class="headerlink" title="volatile 的特性"></a>volatile 的特性</h4><ol>
+<li>可见性，当一个变量被 volatile 修饰之后，能保证此变量对所有线程的可见性，即当一个线程修改了这个变量的值，新值对其它线程是立即可见的。</li>
+<li>一定程度上保证有序性，被 volatile 修饰的变量禁止指令重排序，所以能在一定程度上保证有序性。</li>
+<li>对任意单个 volatile 变量的读/写具有原子性，但类似于 volatile++ 这种复合操作不具有原子性。  例如：</li>
 </ol>
-<hr>
-<h4 id="Java-虚拟机栈"><a href="#Java-虚拟机栈" class="headerlink" title="Java 虚拟机栈"></a>Java 虚拟机栈</h4><p>Java 虚拟机栈（Java Virtual Machine Stack）也是线程私有的，它的生命周期与线程相同。Java 虚拟机栈描述的是 Java 方法执行的内存模型：每个方法在执行的同时都会创建一个栈帧（Stack Frame）用于存储局部变量表、操作数栈、动态链接、方法出口等信息。每个方法从调用直至执行完成的过程，对应着一个栈帧在虚拟机中入栈到进栈的过程。</p>
-<p>局部变量表存放了编译期克制的各种基本数据类型（boolean、byte、char、short、int、float、long、double）、对象引用（reference 类型，它不等同于对象本身，可能是一个指向对象起始地址的引用指针，也可能是指向一个代表对象的句柄或其它与此对象相关的位置）和 returnAddress 类型（指向了一条字节码指令的地址）。其中 64 位长度的 long 和 double 类型的数据会占用 2 个局部变量表空间（Slot），其余的数据类型只占 1 个。局部变量所需的内存空间在编译期间完成分配，当进入一个方法时，这个方法需要在帧中分配多大的局部变量空间是完全确定了的，在方法运行期间不会改变局部变量表的大小。</p>
-<p>在 Java 虚拟机规范中，对这个区域规定了两种异常状况：</p>
-<ol>
-<li>如果线程请求的栈深度大于虚拟机所允许的深度，将抛出 StackOverflowError 异常；</li>
-<li>如果虚拟机栈可以动态扩展（当前大部分的Java虚拟机都可动态扩展，只不过Java虚拟机规范中也允许固定长度的虚拟机栈），当扩展时无法申请到足够的内存时会抛出 OutOfMemoryError 异常。</li>
-</ol>
-<hr>
-<h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4><p>本地方法栈（Native Method Stack）虚拟机栈所发挥的作用是非常相似的，它们的区别不过是虚拟机栈为虚拟机执行 Java方法（也就是字节码）服务，而本地方法栈则是为虚拟机使用到的 Native 方法服务。虚拟机规范中对本地方法栈中的方法使用的语言、使用方式与数据结构并没有强制规定，因此具体的虚拟机可以自由实现它。甚至有的虚拟机（譬如 Sun HotSpot 虚拟机）直接就把本地方法栈和虚拟机栈合二为一。与虚拟机栈一样，本地方法栈区域也会抛出 StackOverflowError 和 OutOfMemoryError 异常。</p>
-<hr>
-<h4 id="Java-堆"><a href="#Java-堆" class="headerlink" title="Java 堆"></a>Java 堆</h4><p>也叫做java 堆（Java Heap）、GC 堆（Garbage Collected Heap）是 java 虚拟机所管理的内存中最大的一块内存区域，也是被各个线程共享的内存区域，在 JVM 启动时创建。该内存区域存放了对象实例及数组(所有 new 的对象)。其大小通过 -Xms(最小值)和 -Xmx(最大值)参数设置，-Xms 为 JVM启动时申请的最小内存，默认为操作系统物理内存的 1/64 但小于 1G，-Xmx 为 JVM 可申请的最大内存，默认为物理内存的 1/4 但小于 1G，默认当空余堆内存小于 40% 时，JVM 会增大 Heap 到 -Xmx指定的大小，可通过 -XX:MinHeapFreeRation= 来指定这个比列；当空余堆内存大于 70% 时，JVM 会减小 heap 的大小到 -Xms 指定的大小，可通过 XX:MaxHeapFreeRation= 来指定这个比列，对于运行系统，为避免在运行时频繁调整 Heap 的大小，通常 -Xms 与 -Xmx 的值设成一样。</p>
-<p>Java 堆是垃圾收集器管理的主要区域，从内存回收的角度来看，由于现在收集器基本是采用分代收集算法，堆被划分为新生代和老年代。新生代主要存储新创建的对象和尚未进入老年代的对象。老年代存储经过多次新生代 GC(Minor GC) 任然存活的对象。</p>
-<ol>
-<li>新生代： 程序新创建的对象都是从新生代分配内存，新生代由 Eden Space 和两块相同大小的Survivor Space(通常又称 S0 和 S1 或 From 和 To)构成，在 Sun HotSpot 虚拟机中 Eden 和 Survivor 的大小比例是 8:1，也就是每次新生代中可用内存空间为整个新生代容量的 90%（80% + 10%），可通过 -Xmn 参数来指定新生代的大小，也可以通过 -XX:SurvivorRation 来调整 Eden Space 及 Survivor Space 的大小。 </li>
-<li>老年代： 用于存放经过多次新生代 GC 任然存活的对象，例如缓存对象，新建的对象也有可能直接进入老年代，主要有两种情况：1、大对象，可通过启动参数设置 -XX:PretenureSizeThreshold=1024(单位为字节，默认为0)来代表超过多大时就不在新生代分配，而是直接在老年代分配。2、大的数组对象，切数组中无引用外部对象。 老年代所占的内存大小为 -Xmx 对应的值减去 -Xmn 对应的值。</li>
-</ol>
-<p><img src="http://ojirj5wkr.bkt.clouddn.com/image/hexo/java-heap.jpg" alt="java-heap.jpg"></p>
-<ul>
-<li>Young Generation 即图中的 Eden + From Space + To Space<ul>
-<li>Eden 存放新生的对象</li>
-<li>Survivor Space 有两个，存放每次垃圾回收后存活的对象</li>
-</ul>
-</li>
-<li>Old Generation Tenured Generation 即图中的 Old Space 主要存放应用程序中生命周期长的存活对象。</li>
-</ul>
-<hr>
-<h4 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h4><p>方法区（Method Area）与 Java 堆一样，是各个线程共享的内存区域，它用于内存已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。虽然 Java 虚拟机规范把方法区描述为堆的一个逻辑部分，但是它却有一个别名叫做 Non-Heap（非堆）。对于 HotSpot 虚拟机，也把方法区成为“永久代”（Permanent Generation），默认最小值为16MB，最大值为64MB，可以通过 -XX:PermSize 和 -XX:MaxPermSize 参数限制方法区的大小。在 JDK 1.7 以后已经逐步改为采用 Native Memory 来实现方法区。当方法区无法满足内存分配需求时，将抛出 OutOfMemoryError 异常。</p>
-<h4 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h4><p>运行时常量池（Runtime Constant Pool）是方法区的一部分。Class 文件中处了有类的版本、字段、方法、接口等描述信息外，还有一项信息是常量池（Constant Pool Table），用于存放编译器生成的各种符号引用，这部分内容将在类加载后放到方法区的运行时常量池中。当常量池无法再申请到内存时会抛出 OutOfMemoryError 异常。对于 HotSpot 虚拟机，在 JDK 1.7 中，已经把原本放在永久代的字符串常量池移除。</p>
-<hr>
-<h3 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h3><p>直接内存（Direct Memory）并不是虚拟机运行时数据区的一部分，也不是 Java 虚拟机规范中定义的内存区域。但是这部分内存也被频繁地使用，而且也可能导致 OutOfMemoryError 异常。jdk1.4 中新加入的NIO，引入了通道与缓冲区的IO方式，它可以调用Native方法直接分配堆外内存，这个堆外内存就是本机内存，不会影响到堆内存的大小。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.pdh.test;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * volatile 复合操作测试</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span> 2017/11/12</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VolatileDemo</span> </span>&#123;</div><div class="line">	<span class="comment">//	申明 volatile 变量</span></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> <span class="keyword">int</span> i = <span class="number">0</span>;</div><div class="line">	<span class="comment">//	计数</span></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> COUNT = <span class="number">10</span>;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 对 volatile 变量复合运算</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">increase</span><span class="params">()</span> </span>&#123;</div><div class="line">		i++;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		<span class="comment">// 启动 10 个线程分别对 i 进行 10000 次计算，正常情况结果为 100000 </span></div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; COUNT; j++) &#123;</div><div class="line">			<span class="keyword">new</span> Thread(() -&gt; &#123;</div><div class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; <span class="number">10000</span>; k++) &#123;</div><div class="line">					increase();</div><div class="line">				&#125;</div><div class="line">			&#125;).start();</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// 等待所有累加线程全部执行结束，这里不同 ide 中线程存活数不一样，</span></div><div class="line">		<span class="comment">// 该示例代码在 idea 中运行，会多出一个 Monitor Ctrl-Break 线程，故条件是 &gt; 2，</span></div><div class="line">		<span class="comment">// 如果在 Eclipse 中条件应为 &gt; 1</span></div><div class="line">		<span class="keyword">while</span> (Thread.activeCount() &gt; <span class="number">2</span>) &#123;</div><div class="line">			Thread.yield();</div><div class="line">		&#125;</div><div class="line">		System.out.println(i);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如上代码正常运行结果应该打印100000，但实际结果基本得不到正确结果。这说明了 volatile 变量的复合运算并不具有原子性，想要得到正确结果，需要对 volatile 变量运算操作加锁或者加上同步块。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> com.pdh.test;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * volatile 复合操作测试</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span> 2017/11/12</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VolatileDemo</span> </span>&#123;</div><div class="line">	<span class="comment">//	申明 volatile 变量</span></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> <span class="keyword">int</span> i = <span class="number">0</span>;</div><div class="line">	<span class="comment">//	计数</span></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> COUNT = <span class="number">10</span>;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 对 volatile 变量复合运算，使用 synchronized 同步</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">increase</span><span class="params">()</span> </span>&#123;</div><div class="line">		i++;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		<span class="comment">// 启动 10 个线程分别对 i 进行 10000 次计算，正常情况结果为 100000</span></div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; COUNT; j++) &#123;</div><div class="line">			<span class="keyword">new</span> Thread(() -&gt; &#123;</div><div class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; <span class="number">10000</span>; k++) &#123;</div><div class="line">					increase();</div><div class="line">				&#125;</div><div class="line">			&#125;).start();</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// 等待所有累加线程全部执行结束，这里不同 ide 中线程存活数不一样，</span></div><div class="line">		<span class="comment">// 该示例代码在 idea 中运行，会多出一个 Monitor Ctrl-Break 线程，故条件是 &gt; 2，</span></div><div class="line">		<span class="comment">// 如果在 Eclipse 中条件应为 &gt; 1</span></div><div class="line">		<span class="keyword">while</span> (Thread.activeCount() &gt; <span class="number">2</span>) &#123;</div><div class="line">			Thread.yield();</div><div class="line">		&#125;</div><div class="line">		System.out.println(i);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="volatile-适合场景"><a href="#volatile-适合场景" class="headerlink" title="volatile 适合场景"></a>volatile 适合场景</h4><p>volatile适用于不需要保证原子性，但却需要保证可见性的场景。一种典型的使用场景是用它修饰用于停止线程的状态标记，如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.pdh.test;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * volatile 复合操作测试</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span> 2017/11/12</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VolatileDemo</span> </span>&#123;</div><div class="line">	<span class="comment">//	申明 volatile 变量</span></div><div class="line">	<span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</div><div class="line">	<span class="comment">//	计数</span></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> COUNT = <span class="number">10</span>;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 使用 volatile 变量作为线程结束标志</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">new</span> Thread(() -&gt; &#123;</div><div class="line">			<span class="keyword">while</span> (!flag) &#123;</div><div class="line">				System.out.println(<span class="string">"Thread is running"</span>);</div><div class="line">			&#125;</div><div class="line">		&#125;).start();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">shutdown</span><span class="params">()</span> </span>&#123;</div><div class="line">		flag = <span class="keyword">true</span>;</div><div class="line">		System.out.println(<span class="string">"Thread is stop"</span>);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">		VolatileDemo demo = <span class="keyword">new</span> VolatileDemo();</div><div class="line">		demo.start();</div><div class="line">		Thread.sleep(<span class="number">2000</span>);</div><div class="line">		demo.shutdown();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="使用-volatile-的意义"><a href="#使用-volatile-的意义" class="headerlink" title="使用 volatile 的意义"></a>使用 volatile 的意义</h4><p>在某些情况下，volatile 的同步机制性能要优于锁。</p>
 <hr>
 <h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><ul>
 <li><span style="color:red;font-size:14px;font-family:Microsoft YaHei;">深入理解 Java 虚拟机</span></li>
-<li><a href="http://www.hollischuang.com/archives/80" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">http://www.hollischuang.com/archives/80</span></a></li>
 </ul>
 
       
@@ -486,8 +474,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/03/springboot-socketio/" rel="next" title="Spring Boot 集成 socket.io 后端实现消息实时通信">
-                <i class="fa fa-chevron-left"></i> Spring Boot 集成 socket.io 后端实现消息实时通信
+              <a href="/2017/10/28/httpclient-tools/" rel="next" title="httpclient 调用工具（同时支持 HTTP 和 HTTPS 协议）">
+                <i class="fa fa-chevron-left"></i> httpclient 调用工具（同时支持 HTTP 和 HTTPS 协议）
               </a>
             
           </div>
@@ -495,10 +483,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/17/java-memory-model-01/" rel="prev" title="理解 JVM：Java 内存模型（一）——基础">
-                理解 JVM：Java 内存模型（一）——基础 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -663,7 +647,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时数据区（Runtime-Data-Area）"><span class="nav-number">1.</span> <span class="nav-text">运行时数据区（Runtime Data Area）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#程序计数器"><span class="nav-number">1.1.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java-虚拟机栈"><span class="nav-number">1.2.</span> <span class="nav-text">Java 虚拟机栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地方法栈"><span class="nav-number">1.3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java-堆"><span class="nav-number">1.4.</span> <span class="nav-text">Java 堆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法区"><span class="nav-number">1.5.</span> <span class="nav-text">方法区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行时常量池"><span class="nav-number">1.6.</span> <span class="nav-text">运行时常量池</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直接内存"><span class="nav-number">2.</span> <span class="nav-text">直接内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字-volatile"><span class="nav-number">2.</span> <span class="nav-text">关键字 volatile</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#volatile-的特性"><span class="nav-number">2.1.</span> <span class="nav-text">volatile 的特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#volatile-适合场景"><span class="nav-number">2.2.</span> <span class="nav-text">volatile 适合场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-volatile-的意义"><span class="nav-number">2.3.</span> <span class="nav-text">使用 volatile 的意义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
 
           </div>
