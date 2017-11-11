@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://alexpdh.com/2017/09/17/java-memory-model-01/</loc>
+    <lastmod>2017-11-11T15:43:09.586Z</lastmod>
+    <data>
+        <display>
+        <title>理解 JVM：Java 内存模型之——基础</title>
+        <pubTime>2017-09-17T12:32:17.000Z</pubTime>
+        
+        <tag>jvm</tag>
+         
+         
+           
+             
+              <breadCrumb title="java" url="http://alexpdh.com/categories/java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://alexpdh.com/2017/10/28/httpclient-tools/</loc>
     <lastmod>2017-10-28T07:00:50.534Z</lastmod>
     <data>
@@ -57,26 +77,6 @@
            
              
               <breadCrumb title="vagrant" url="http://alexpdh.com/categories/vagrant/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://alexpdh.com/2017/09/17/java-memory-model-01/</loc>
-    <lastmod>2017-10-08T14:37:40.627Z</lastmod>
-    <data>
-        <display>
-        <title>理解 JVM：Java 内存模型之（基础）</title>
-        <pubTime>2017-09-17T12:32:17.000Z</pubTime>
-        
-        <tag>jvm</tag>
-         
-         
-           
-             
-              <breadCrumb title="java" url="http://alexpdh.com/categories/java/"/>
           
         </display>
     </data>
