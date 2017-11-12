@@ -4,8 +4,28 @@
 
     
   <url>
+    <loc>http://alexpdh.com/2017/11/12/java-memory-model-03/</loc>
+    <lastmod>2017-11-12T19:01:48.156Z</lastmod>
+    <data>
+        <display>
+        <title>理解 JVM：Java 内存模型（三）—— 锁</title>
+        <pubTime>2017-11-12T06:59:16.000Z</pubTime>
+        
+        <tag>jvm</tag>
+         
+         
+           
+             
+              <breadCrumb title="java" url="http://alexpdh.com/categories/java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://alexpdh.com/2017/11/11/java-memory-model-02/</loc>
-    <lastmod>2017-11-11T19:33:16.212Z</lastmod>
+    <lastmod>2017-11-12T09:12:27.327Z</lastmod>
     <data>
         <display>
         <title>理解 JVM：Java 内存模型（二）——volatile</title>
