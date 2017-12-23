@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://alexpdh.com/2017/12/23/spring-cloud-01/</loc>
+    <lastmod>2017-12-23T05:45:07.394Z</lastmod>
+    <data>
+        <display>
+        <title>Spring Cloud 实践（一）：Spring Cloud 介绍</title>
+        <pubTime>2017-12-23T05:45:07.000Z</pubTime>
+        
+        <tag>Spring Cloud</tag>
+         
+         
+           
+             
+              <breadCrumb title="java" url="http://alexpdh.com/categories/java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://alexpdh.com/2017/11/12/java-memory-model-03/</loc>
     <lastmod>2017-11-29T16:40:12.330Z</lastmod>
     <data>

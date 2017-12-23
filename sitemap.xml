@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://alexpdh.com/2017/12/23/spring-cloud-01/</loc>
+    
+    <lastmod>2017-12-23T05:45:07.394Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://alexpdh.com/2017/11/12/java-memory-model-03/</loc>
     
     <lastmod>2017-11-29T16:40:12.330Z</lastmod>

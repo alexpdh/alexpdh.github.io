@@ -70,7 +70,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="行为型模式," />
+  <meta name="keywords" content="Spring Cloud," />
 
 
 
@@ -88,24 +88,31 @@
 
 
 
-<meta name="description" content="命令模式（command pattern）命令模式（command pattern）：属于对象的行为模式。将一个请求封装为一个对象，从而使你可用不同的请求对客户进行参数化；对请求排队或记录请求日志，以及支持可撤销操作。
+<meta name="description" content="概述
+ 当下互联网最热的架构模式可能就是微服务架构了吧，关于微服务的概念和介绍可以参照大神 Martin Flower 的文章 Microservices 国内翻译版本 http://www.cnblogs.com/liuning8023/p/4493156.html 。而 Spring Cloud 则是伴随着微服务概念诞生的飞速发展的开源框架。
 
-命令模式UML图">
+&amp;lt;! – more –&amp;gt;
+
+Spri">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java设计模式（二十）：命令模式">
-<meta property="og:url" content="http://alexpdh.com/2017/08/01/command-pattern/index.html">
+<meta property="og:title" content="Spring Cloud 实践（一）：Spring Cloud 介绍">
+<meta property="og:url" content="http://alexpdh.com/2017/12/23/spring-cloud-01/index.html">
 <meta property="og:site_name" content="alexpdh's blog">
-<meta property="og:description" content="命令模式（command pattern）命令模式（command pattern）：属于对象的行为模式。将一个请求封装为一个对象，从而使你可用不同的请求对客户进行参数化；对请求排队或记录请求日志，以及支持可撤销操作。
+<meta property="og:description" content="概述
+ 当下互联网最热的架构模式可能就是微服务架构了吧，关于微服务的概念和介绍可以参照大神 Martin Flower 的文章 Microservices 国内翻译版本 http://www.cnblogs.com/liuning8023/p/4493156.html 。而 Spring Cloud 则是伴随着微服务概念诞生的飞速发展的开源框架。
 
-命令模式UML图">
-<meta property="og:image" content="http://ojirj5wkr.bkt.clouddn.com/command-pattern.jpg">
-<meta property="og:updated_time" content="2017-09-26T09:51:40.809Z">
+&amp;lt;! – more –&amp;gt;
+
+Spri">
+<meta property="og:updated_time" content="2017-12-23T05:45:07.394Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java设计模式（二十）：命令模式">
-<meta name="twitter:description" content="命令模式（command pattern）命令模式（command pattern）：属于对象的行为模式。将一个请求封装为一个对象，从而使你可用不同的请求对客户进行参数化；对请求排队或记录请求日志，以及支持可撤销操作。
+<meta name="twitter:title" content="Spring Cloud 实践（一）：Spring Cloud 介绍">
+<meta name="twitter:description" content="概述
+ 当下互联网最热的架构模式可能就是微服务架构了吧，关于微服务的概念和介绍可以参照大神 Martin Flower 的文章 Microservices 国内翻译版本 http://www.cnblogs.com/liuning8023/p/4493156.html 。而 Spring Cloud 则是伴随着微服务概念诞生的飞速发展的开源框架。
 
-命令模式UML图">
-<meta name="twitter:image" content="http://ojirj5wkr.bkt.clouddn.com/command-pattern.jpg">
+&amp;lt;! – more –&amp;gt;
+
+Spri">
 
 
 
@@ -133,13 +140,13 @@
 
 
 
-  <link rel="canonical" href="http://alexpdh.com/2017/08/01/command-pattern/"/>
+  <link rel="canonical" href="http://alexpdh.com/2017/12/23/spring-cloud-01/"/>
 
 
 
 
 
-  <title> Java设计模式（二十）：命令模式 | alexpdh's blog </title>
+  <title> Spring Cloud 实践（一）：Spring Cloud 介绍 | alexpdh's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -305,7 +312,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://alexpdh.com/2017/08/01/command-pattern/">
+  <link itemprop="mainEntityOfPage" href="http://alexpdh.com/2017/12/23/spring-cloud-01/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="alexpdh">
@@ -329,7 +336,7 @@
             
             
               
-                Java设计模式（二十）：命令模式
+                Spring Cloud 实践（一）：Spring Cloud 介绍
               
             
           </h1>
@@ -344,8 +351,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-01T21:49:10+08:00">
-                2017-08-01
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-23T13:45:07+08:00">
+                2017-12-23
               </time>
             
 
@@ -367,8 +374,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -402,52 +409,54 @@
       
 
       
-        <h4 id="命令模式（command-pattern）"><a href="#命令模式（command-pattern）" class="headerlink" title="命令模式（command pattern）"></a>命令模式（command pattern）</h4><p><strong>命令模式（command pattern）：</strong>属于对象的行为模式。将一个请求封装为一个对象，从而使你可用不同的请求对客户进行参数化；对请求排队或记录请求日志，以及支持可撤销操作。</p>
-<hr>
-<h4 id="命令模式UML图"><a href="#命令模式UML图" class="headerlink" title="命令模式UML图"></a>命令模式UML图</h4><p><img src="http://ojirj5wkr.bkt.clouddn.com/command-pattern.jpg" alt="command-pattern"><br><a id="more"></a></p>
-<hr>
-<h4 id="命令模式涉及的角色"><a href="#命令模式涉及的角色" class="headerlink" title="命令模式涉及的角色"></a>命令模式涉及的角色</h4><p><strong>客户端(Client)角色：</strong>创建一个具体命令(ConcreteCommand)对象并确定其接收者。<br><strong>命令(Command)角色：</strong>声明了一个给所有具体命令类的抽象接口。<br><strong>具体命令(ConcreteCommand)角色：</strong>定义一个接收者和行为之间的弱耦合；实现execute()方法，负责调用接收者的相应操作。execute()方法通常叫做执行方法。<br><strong>请求者(Invoker)角色：</strong>负责调用命令对象执行请求，相关的方法叫做行动方法。<br><strong>接收者(Receiver)角色：</strong>负责具体实施和执行一个请求。任何一个类都可以成为接收者，实施和执行请求的方法叫做行动方法。</p>
-<hr>
-<h4 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h4><p><strong>接收者类 Receiver</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.example.commandPattern;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 命令模式：接收者类</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span>: 2017-08-01 22:19</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Receiver</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * 真正执行命令相应的操作</div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">action</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"执行请求操作！"</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>命令接口 Command</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.example.commandPattern;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 命令模式：命令接口</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span>: 2017-08-01 22:23</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Command</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * 执行命令请求</div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>具体命令类 ConcreteCommand</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.example.commandPattern;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 命令模式：具体命令类</div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span>: 2017-08-01 22:25</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteCommand</span> <span class="keyword">implements</span> <span class="title">Command</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * 持有相应的接收者对象</div><div class="line">   */</div><div class="line">  <span class="keyword">private</span> Receiver receiver;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ConcreteCommand</span><span class="params">(Receiver receiver)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.receiver = receiver;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">//通常会转调接收者对象的相应方法，让接收者来真正执行功能</span></div><div class="line">    receiver.action();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>请求者类 Invoker</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.example.commandPattern;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 命令模式：请求者类</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span>: 2017-08-01 22:27</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Invoker</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * 命令对象</div><div class="line">   */</div><div class="line">  <span class="keyword">private</span> Command command;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Invoker</span><span class="params">(Command command)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.command = command;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * 行动方法</div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">action</span><span class="params">()</span> </span>&#123;</div><div class="line">    command.execute();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>客户端测试类 CommandPatternTest</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.example.commandPattern;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 命令模式：客户端测试类</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> pengdh</div><div class="line"> * <span class="doctag">@date</span>: 2017-08-01 22:29</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommandPatternTest</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Receiver receiver = <span class="keyword">new</span> Receiver();</div><div class="line">    Command command = <span class="keyword">new</span> ConcreteCommand(receiver);</div><div class="line">    Invoker invoker = <span class="keyword">new</span> Invoker(command);</div><div class="line">    invoker.action();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<hr>
-<h4 id="命令模式的优点"><a href="#命令模式的优点" class="headerlink" title="命令模式的优点"></a>命令模式的优点</h4><ul>
-<li>松散的耦合</li>
-</ul>
-<blockquote>
-<p>命令模式使得发起命令的对象——客户端，和具体实现命令的对象——接收者对象完全解耦，也就是说发起命令的对象完全不知道具体实现对象是谁，也不知道如何实现。</p>
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
+<p> 当下互联网最热的架构模式可能就是微服务架构了吧，关于微服务的概念和介绍可以参照大神 Martin Flower 的文章 <a href="https://martinfowler.com/articles/microservices.html" target="_blank" rel="external">Microservices</a> 国内翻译版本 <a href="http://www.cnblogs.com/liuning8023/p/4493156.html" target="_blank" rel="external">http://www.cnblogs.com/liuning8023/p/4493156.html</a> 。而 Spring Cloud 则是伴随着微服务概念诞生的飞速发展的开源框架。</p>
 </blockquote>
+<p>&lt;! – more –&gt;</p>
+<hr>
+<h3 id="Spring-Cloud-介绍"><a href="#Spring-Cloud-介绍" class="headerlink" title="Spring Cloud 介绍"></a>Spring Cloud 介绍</h3><p>Spring Cloud 是一个依赖于 Spring Boot 快速构建分布式系统的通用模型的云应用开发工具（例如配置管理，服务发现，断路器，智能路由，微代理，控制总线），它是由一些列框架组成的集合框架。</p>
+<hr>
+<h3 id="Spring-Cloud-特性"><a href="#Spring-Cloud-特性" class="headerlink" title="Spring Cloud 特性"></a>Spring Cloud 特性</h3><p>Spring Cloud专注于提供良好的开箱即用经验的典型用例和可扩展性机制覆盖。</p>
 <ul>
-<li>动态的控制</li>
+<li>分布式/版本化配置</li>
+<li>服务注册和发现</li>
+<li>路由</li>
+<li>service - to - service调用</li>
+<li>负载均衡</li>
+<li>断路器</li>
+<li>分布式消息传递</li>
 </ul>
-<blockquote>
-<p>命令模式把请求封装起来，可以动态地对它进行参数化、队列化和日志化等操作，从而使得系统更灵活。</p>
-</blockquote>
-<ul>
-<li>很自然的复合命令</li>
-</ul>
-<blockquote>
-<p>命令模式中的命令对象能够很容易地组合成复合命令，也就是宏命令，从而使系统操作更简单，功能更强大。</p>
-</blockquote>
-<ul>
-<li>更好的扩展性</li>
-</ul>
-<blockquote>
-<p>由于发起命令的对象和具体的实现完全解耦，因此扩展新的命令就很容易，只需要实现新的命令对象，然后在装配的时候，把具体的实现对象设置到命令对象中，然后就可以使用这个命令对象，已有的实现完全不用变化。</p>
-</blockquote>
 <hr>
-<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><ul>
-<li><span style="color:red;font-size:14px;font-family:Microsoft YaHei;">大话设计模式</span></li>
-<li><a href="http://www.cnblogs.com/java-my-life" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">http://www.cnblogs.com/java-my-life</span></a></li>
-<li><a href="https://github.com/alexpdh/bigTalkDesignPattenSample" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">源码地址：https://github.com/alexpdh/bigTalkDesignPattenSample</span></a></li>
+<h3 id="Spring-Cloud-主要组成成员"><a href="#Spring-Cloud-主要组成成员" class="headerlink" title="Spring Cloud 主要组成成员"></a>Spring Cloud 主要组成成员</h3><p>Spring Cloud 是由众多子项目组成的集合框架，主要项目包括：</p>
+<h4 id="Spring-Cloud-Config"><a href="#Spring-Cloud-Config" class="headerlink" title="Spring Cloud Config"></a>Spring Cloud Config</h4><p>配置中心，为分布式系统中的外部配置提供服务器和客户端支持。服务端用于连接远程配置仓库和供客户端获取配置信息；客户端则是微服务中的各个应用。它实现了客户端和服务端上Spring <code>Environment</code>和<code>PropertySource</code>的抽象映射。Spring Cloud Config 默认采用 Git 来存储服务端的配置信息，另外也提供了本地存储和 Subversion 的方式。</p>
+<h4 id="Spring-Cloud-Netflix"><a href="#Spring-Cloud-Netflix" class="headerlink" title="Spring Cloud Netflix"></a>Spring Cloud Netflix</h4><p>与 Netflix OSS集成，提供的模式包括服务发现（Eureka），断路器（Hystrix），智能路由（Zuul）和客户端负载平衡（Ribbon）。</p>
+<h5 id="服务发现：Eureka"><a href="#服务发现：Eureka" class="headerlink" title="服务发现：Eureka"></a>服务发现：Eureka</h5><p>一个基于 REST 的服务中心，实现微服务的注册与发现，包括 server 和 client 两部分。</p>
+<ul>
+<li>Eureka Server：供各 Client 注册自己；</li>
+<li>Eureka Client ：提供服务的客户端；</li>
+</ul>
+<h5 id="断路器：Hystrix"><a href="#断路器：Hystrix" class="headerlink" title="断路器：Hystrix"></a>断路器：Hystrix</h5><p>通过断路器可以控制服务和第三方库的节点,从而对延迟和故障提供更强大的容错能力。</p>
+<h5 id="智能路由：Zuul"><a href="#智能路由：Zuul" class="headerlink" title="智能路由：Zuul"></a>智能路由：Zuul</h5><p>为微服务架构提供了前门保护的作用，同时将权限控制这些较重的非业务逻辑内容迁移到服务路由层面，使得服务集群主体能够具备更高的可复用性和可测试性。</p>
+<h5 id="客户端负载平衡：Ribbon"><a href="#客户端负载平衡：Ribbon" class="headerlink" title="客户端负载平衡：Ribbon"></a>客户端负载平衡：Ribbon</h5><p>Ribbon是一个客户端负载均衡器，它可以很好地控制HTTP和TCP客户端的行为。</p>
+<h4 id="Spring-Cloud-Bus"><a href="#Spring-Cloud-Bus" class="headerlink" title="Spring Cloud Bus"></a>Spring Cloud Bus</h4><p>Spring Cloud Bus 将分布式系统的节点与轻量级消息代理链接。这可以用于广播状态更改（例如配置更改）或其他管理指令。</p>
+<h4 id="Spring-Cloud-Stream"><a href="#Spring-Cloud-Stream" class="headerlink" title="Spring Cloud Stream"></a>Spring Cloud Stream</h4><p>轻量级事件驱动的微服务框架，可快速构建可连接到外部系统的应用程序。使用Apache Kafka或RabbitMQ在Spring Boot应用程序之间发送和接收消息的简单声明式模型。</p>
+<h4 id="spring-cloud-stream-app-starters"><a href="#spring-cloud-stream-app-starters" class="headerlink" title="spring cloud stream app starters"></a>spring cloud stream app starters</h4><p>Spring Cloud任务应用程序启动器是Spring Boot应用程序，可能是任何进程，包括不会永远运行的Spring Batch作业，并且它们在有限时间的数据处理之后结束/停止。</p>
+<h4 id="Spring-Cloud-for-Cloud-Foundry"><a href="#Spring-Cloud-for-Cloud-Foundry" class="headerlink" title="Spring Cloud for Cloud Foundry"></a>Spring Cloud for Cloud Foundry</h4><p>将您的应用程序与Pivotal Cloudfoundry集成。提供服务发现实现，还可以轻松实现通过SSO和OAuth2保护资源，还可以创建Cloudfoundry服务代理。</p>
+<h4 id="spring-cloud-cluster"><a href="#spring-cloud-cluster" class="headerlink" title="spring cloud cluster"></a>spring cloud cluster</h4><p>提供在分布式系统中的集群所需要的基础功能支持。</p>
+<h4 id="Spring-Cloud-Consul"><a href="#Spring-Cloud-Consul" class="headerlink" title="Spring Cloud Consul"></a>Spring Cloud Consul</h4><p>Consul 是一个支持多数据中心分布式高可用的服务发现和配置共享的服务软件。</p>
+<h4 id="spring-cloud-security"><a href="#spring-cloud-security" class="headerlink" title="spring cloud security"></a>spring cloud security</h4><p>在Zuul代理中为负载平衡的OAuth2休眠客户端和认证头中继提供支持。</p>
+<h4 id="spring-cloud-sleuth"><a href="#spring-cloud-sleuth" class="headerlink" title="spring cloud sleuth"></a>spring cloud sleuth</h4><p>适用于Spring Cloud应用程序的分布式跟踪，与Zipkin，HTrace和基于日志（例如ELK）跟踪兼容。</p>
+<h4 id="spring-cloud-data-flow"><a href="#spring-cloud-data-flow" class="headerlink" title="spring cloud data flow"></a>spring cloud data flow</h4><p>针对现代运行时的可组合微服务应用程序的云本地编排服务。易于使用的DSL，拖放式GUI和REST-API一起简化了基于微服务的数据管道的整体编排。</p>
+<h4 id="spring-cloud-zookeeper"><a href="#spring-cloud-zookeeper" class="headerlink" title="spring cloud zookeeper"></a>spring cloud zookeeper</h4><p>Zookeeper的服务发现和配置管理。</p>
+<h4 id="spring-cloud-for-amazon-web-services"><a href="#spring-cloud-for-amazon-web-services" class="headerlink" title="spring cloud for amazon web services"></a>spring cloud for amazon web services</h4><p>轻松集成托管的Amazon的Web Services服务。它通过使用spring的idioms和APIs便捷集成AWS服务，例如缓存或消息API。开发人员可以围绕托管服务，不必关心基础架构来构建应用。</p>
+<h4 id="spring-cloud-connectors"><a href="#spring-cloud-connectors" class="headerlink" title="spring cloud connectors"></a>spring cloud connectors</h4><p>使PaaS应用程序在各种平台上轻松连接到后端服务，如数据库和消息代理（以前称为“Spring Cloud”的项目）。</p>
+<h4 id="spring-cloud-starters"><a href="#spring-cloud-starters" class="headerlink" title="spring cloud starters"></a>spring cloud starters</h4><p>Spring Boot式的启动项目，为Spring Cloud提供开箱即用的依赖管理。</p>
+<h4 id="Spring-Cloud-CLI"><a href="#Spring-Cloud-CLI" class="headerlink" title="Spring Cloud CLI"></a>Spring Cloud CLI</h4><p>基于 Spring Boot CLI，可以让你以命令行方式快速建立云组件。</p>
+<hr>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><ul>
+<li><a href="https://martinfowler.com/articles/microservices.html" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">https://martinfowler.com/articles/microservices.html</span></a></li>
+<li><a href="http://www.cnblogs.com/liuning8023/p/4493156.html" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">http://www.cnblogs.com/liuning8023/p/4493156.html</span></a></li>
+<li><a href="http://www.spring4all.com" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">http://www.spring4all.com</span></a></li>
 </ul>
 
       
@@ -477,7 +486,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/行为型模式/" rel="tag"># 行为型模式</a>
+            <a href="/tags/Spring-Cloud/" rel="tag"># Spring Cloud</a>
           
         </div>
       
@@ -486,8 +495,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/30/birdge-pattern/" rel="next" title="Java设计模式（十九）：桥接模式">
-                <i class="fa fa-chevron-left"></i> Java设计模式（十九）：桥接模式
+              <a href="/2017/11/12/java-memory-model-03/" rel="next" title="理解 JVM：Java 内存模型（三）—— 锁">
+                <i class="fa fa-chevron-left"></i> 理解 JVM：Java 内存模型（三）—— 锁
               </a>
             
           </div>
@@ -495,10 +504,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/12/chain-of-responsibility-pattern/" rel="prev" title="Java设计模式（二十一）：职责链模式">
-                Java设计模式（二十一）：职责链模式 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -663,7 +668,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#命令模式（command-pattern）"><span class="nav-number">1.</span> <span class="nav-text">命令模式（command pattern）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令模式UML图"><span class="nav-number">2.</span> <span class="nav-text">命令模式UML图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令模式涉及的角色"><span class="nav-number">3.</span> <span class="nav-text">命令模式涉及的角色</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#示例代码"><span class="nav-number">4.</span> <span class="nav-text">示例代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令模式的优点"><span class="nav-number">5.</span> <span class="nav-text">命令模式的优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考文献"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-介绍"><span class="nav-number">2.</span> <span class="nav-text">Spring Cloud 介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-特性"><span class="nav-number">3.</span> <span class="nav-text">Spring Cloud 特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-主要组成成员"><span class="nav-number">4.</span> <span class="nav-text">Spring Cloud 主要组成成员</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Cloud-Config"><span class="nav-number">4.1.</span> <span class="nav-text">Spring Cloud Config</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Cloud-Netflix"><span class="nav-number">4.2.</span> <span class="nav-text">Spring Cloud Netflix</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务发现：Eureka"><span class="nav-number">4.2.1.</span> <span class="nav-text">服务发现：Eureka</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#断路器：Hystrix"><span class="nav-number">4.2.2.</span> <span class="nav-text">断路器：Hystrix</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#智能路由：Zuul"><span class="nav-number">4.2.3.</span> <span class="nav-text">智能路由：Zuul</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端负载平衡：Ribbon"><span class="nav-number">4.2.4.</span> <span class="nav-text">客户端负载平衡：Ribbon</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Cloud-Bus"><span class="nav-number">4.3.</span> <span class="nav-text">Spring Cloud Bus</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Cloud-Stream"><span class="nav-number">4.4.</span> <span class="nav-text">Spring Cloud Stream</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-cloud-stream-app-starters"><span class="nav-number">4.5.</span> <span class="nav-text">spring cloud stream app starters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Cloud-for-Cloud-Foundry"><span class="nav-number">4.6.</span> <span class="nav-text">Spring Cloud for Cloud Foundry</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-cloud-cluster"><span class="nav-number">4.7.</span> <span class="nav-text">spring cloud cluster</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Cloud-Consul"><span class="nav-number">4.8.</span> <span class="nav-text">Spring Cloud Consul</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-cloud-security"><span class="nav-number">4.9.</span> <span class="nav-text">spring cloud security</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-cloud-sleuth"><span class="nav-number">4.10.</span> <span class="nav-text">spring cloud sleuth</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-cloud-data-flow"><span class="nav-number">4.11.</span> <span class="nav-text">spring cloud data flow</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-cloud-zookeeper"><span class="nav-number">4.12.</span> <span class="nav-text">spring cloud zookeeper</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-cloud-for-amazon-web-services"><span class="nav-number">4.13.</span> <span class="nav-text">spring cloud for amazon web services</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-cloud-connectors"><span class="nav-number">4.14.</span> <span class="nav-text">spring cloud connectors</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-cloud-starters"><span class="nav-number">4.15.</span> <span class="nav-text">spring cloud starters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Cloud-CLI"><span class="nav-number">4.16.</span> <span class="nav-text">Spring Cloud CLI</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
 
           </div>

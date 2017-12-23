@@ -298,6 +298,195 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://alexpdh.com/2017/12/23/spring-cloud-01/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="alexpdh">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/itdog.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="alexpdh's blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="alexpdh's blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/12/23/spring-cloud-01/" itemprop="url">
+                  Spring Cloud 实践（一）：Spring Cloud 介绍
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-23T13:45:07+08:00">
+                2017-12-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
+<p> 当下互联网最热的架构模式可能就是微服务架构了吧，关于微服务的概念和介绍可以参照大神 Martin Flower 的文章 <a href="https://martinfowler.com/articles/microservices.html" target="_blank" rel="external">Microservices</a> 国内翻译版本 <a href="http://www.cnblogs.com/liuning8023/p/4493156.html" target="_blank" rel="external">http://www.cnblogs.com/liuning8023/p/4493156.html</a> 。而 Spring Cloud 则是伴随着微服务概念诞生的飞速发展的开源框架。</p>
+</blockquote>
+<p>&lt;! – more –&gt;</p>
+<hr>
+<h3 id="Spring-Cloud-介绍"><a href="#Spring-Cloud-介绍" class="headerlink" title="Spring Cloud 介绍"></a>Spring Cloud 介绍</h3><p>Spring Cloud 是一个依赖于 Spring Boot 快速构建分布式系统的通用模型的云应用开发工具（例如配置管理，服务发现，断路器，智能路由，微代理，控制总线），它是由一些列框架组成的集合框架。</p>
+<hr>
+<h3 id="Spring-Cloud-特性"><a href="#Spring-Cloud-特性" class="headerlink" title="Spring Cloud 特性"></a>Spring Cloud 特性</h3><p>Spring Cloud专注于提供良好的开箱即用经验的典型用例和可扩展性机制覆盖。</p>
+<ul>
+<li>分布式/版本化配置</li>
+<li>服务注册和发现</li>
+<li>路由</li>
+<li>service - to - service调用</li>
+<li>负载均衡</li>
+<li>断路器</li>
+<li>分布式消息传递</li>
+</ul>
+<hr>
+<h3 id="Spring-Cloud-主要组成成员"><a href="#Spring-Cloud-主要组成成员" class="headerlink" title="Spring Cloud 主要组成成员"></a>Spring Cloud 主要组成成员</h3><p>Spring Cloud 是由众多子项目组成的集合框架，主要项目包括：</p>
+<h4 id="Spring-Cloud-Config"><a href="#Spring-Cloud-Config" class="headerlink" title="Spring Cloud Config"></a>Spring Cloud Config</h4><p>配置中心，为分布式系统中的外部配置提供服务器和客户端支持。服务端用于连接远程配置仓库和供客户端获取配置信息；客户端则是微服务中的各个应用。它实现了客户端和服务端上Spring <code>Environment</code>和<code>PropertySource</code>的抽象映射。Spring Cloud Config 默认采用 Git 来存储服务端的配置信息，另外也提供了本地存储和 Subversion 的方式。</p>
+<h4 id="Spring-Cloud-Netflix"><a href="#Spring-Cloud-Netflix" class="headerlink" title="Spring Cloud Netflix"></a>Spring Cloud Netflix</h4><p>与 Netflix OSS集成，提供的模式包括服务发现（Eureka），断路器（Hystrix），智能路由（Zuul）和客户端负载平衡（Ribbon）。</p>
+<h5 id="服务发现：Eureka"><a href="#服务发现：Eureka" class="headerlink" title="服务发现：Eureka"></a>服务发现：Eureka</h5><p>一个基于 REST 的服务中心，实现微服务的注册与发现，包括 server 和 client 两部分。</p>
+<ul>
+<li>Eureka Server：供各 Client 注册自己；</li>
+<li>Eureka Client ：提供服务的客户端；</li>
+</ul>
+<h5 id="断路器：Hystrix"><a href="#断路器：Hystrix" class="headerlink" title="断路器：Hystrix"></a>断路器：Hystrix</h5><p>通过断路器可以控制服务和第三方库的节点,从而对延迟和故障提供更强大的容错能力。</p>
+<h5 id="智能路由：Zuul"><a href="#智能路由：Zuul" class="headerlink" title="智能路由：Zuul"></a>智能路由：Zuul</h5><p>为微服务架构提供了前门保护的作用，同时将权限控制这些较重的非业务逻辑内容迁移到服务路由层面，使得服务集群主体能够具备更高的可复用性和可测试性。</p>
+<h5 id="客户端负载平衡：Ribbon"><a href="#客户端负载平衡：Ribbon" class="headerlink" title="客户端负载平衡：Ribbon"></a>客户端负载平衡：Ribbon</h5><p>Ribbon是一个客户端负载均衡器，它可以很好地控制HTTP和TCP客户端的行为。</p>
+<h4 id="Spring-Cloud-Bus"><a href="#Spring-Cloud-Bus" class="headerlink" title="Spring Cloud Bus"></a>Spring Cloud Bus</h4><p>Spring Cloud Bus 将分布式系统的节点与轻量级消息代理链接。这可以用于广播状态更改（例如配置更改）或其他管理指令。</p>
+<h4 id="Spring-Cloud-Stream"><a href="#Spring-Cloud-Stream" class="headerlink" title="Spring Cloud Stream"></a>Spring Cloud Stream</h4><p>轻量级事件驱动的微服务框架，可快速构建可连接到外部系统的应用程序。使用Apache Kafka或RabbitMQ在Spring Boot应用程序之间发送和接收消息的简单声明式模型。</p>
+<h4 id="spring-cloud-stream-app-starters"><a href="#spring-cloud-stream-app-starters" class="headerlink" title="spring cloud stream app starters"></a>spring cloud stream app starters</h4><p>Spring Cloud任务应用程序启动器是Spring Boot应用程序，可能是任何进程，包括不会永远运行的Spring Batch作业，并且它们在有限时间的数据处理之后结束/停止。</p>
+<h4 id="Spring-Cloud-for-Cloud-Foundry"><a href="#Spring-Cloud-for-Cloud-Foundry" class="headerlink" title="Spring Cloud for Cloud Foundry"></a>Spring Cloud for Cloud Foundry</h4><p>将您的应用程序与Pivotal Cloudfoundry集成。提供服务发现实现，还可以轻松实现通过SSO和OAuth2保护资源，还可以创建Cloudfoundry服务代理。</p>
+<h4 id="spring-cloud-cluster"><a href="#spring-cloud-cluster" class="headerlink" title="spring cloud cluster"></a>spring cloud cluster</h4><p>提供在分布式系统中的集群所需要的基础功能支持。</p>
+<h4 id="Spring-Cloud-Consul"><a href="#Spring-Cloud-Consul" class="headerlink" title="Spring Cloud Consul"></a>Spring Cloud Consul</h4><p>Consul 是一个支持多数据中心分布式高可用的服务发现和配置共享的服务软件。</p>
+<h4 id="spring-cloud-security"><a href="#spring-cloud-security" class="headerlink" title="spring cloud security"></a>spring cloud security</h4><p>在Zuul代理中为负载平衡的OAuth2休眠客户端和认证头中继提供支持。</p>
+<h4 id="spring-cloud-sleuth"><a href="#spring-cloud-sleuth" class="headerlink" title="spring cloud sleuth"></a>spring cloud sleuth</h4><p>适用于Spring Cloud应用程序的分布式跟踪，与Zipkin，HTrace和基于日志（例如ELK）跟踪兼容。</p>
+<h4 id="spring-cloud-data-flow"><a href="#spring-cloud-data-flow" class="headerlink" title="spring cloud data flow"></a>spring cloud data flow</h4><p>针对现代运行时的可组合微服务应用程序的云本地编排服务。易于使用的DSL，拖放式GUI和REST-API一起简化了基于微服务的数据管道的整体编排。</p>
+<h4 id="spring-cloud-zookeeper"><a href="#spring-cloud-zookeeper" class="headerlink" title="spring cloud zookeeper"></a>spring cloud zookeeper</h4><p>Zookeeper的服务发现和配置管理。</p>
+<h4 id="spring-cloud-for-amazon-web-services"><a href="#spring-cloud-for-amazon-web-services" class="headerlink" title="spring cloud for amazon web services"></a>spring cloud for amazon web services</h4><p>轻松集成托管的Amazon的Web Services服务。它通过使用spring的idioms和APIs便捷集成AWS服务，例如缓存或消息API。开发人员可以围绕托管服务，不必关心基础架构来构建应用。</p>
+<h4 id="spring-cloud-connectors"><a href="#spring-cloud-connectors" class="headerlink" title="spring cloud connectors"></a>spring cloud connectors</h4><p>使PaaS应用程序在各种平台上轻松连接到后端服务，如数据库和消息代理（以前称为“Spring Cloud”的项目）。</p>
+<h4 id="spring-cloud-starters"><a href="#spring-cloud-starters" class="headerlink" title="spring cloud starters"></a>spring cloud starters</h4><p>Spring Boot式的启动项目，为Spring Cloud提供开箱即用的依赖管理。</p>
+<h4 id="Spring-Cloud-CLI"><a href="#Spring-Cloud-CLI" class="headerlink" title="Spring Cloud CLI"></a>Spring Cloud CLI</h4><p>基于 Spring Boot CLI，可以让你以命令行方式快速建立云组件。</p>
+<hr>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><ul>
+<li><a href="https://martinfowler.com/articles/microservices.html" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">https://martinfowler.com/articles/microservices.html</span></a></li>
+<li><a href="http://www.cnblogs.com/liuning8023/p/4493156.html" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">http://www.cnblogs.com/liuning8023/p/4493156.html</span></a></li>
+<li><a href="http://www.spring4all.com" target="_blank" rel="external"><span style="color:blue;font-size:14px;font-family:Microsoft YaHei;font-style:oblique;">http://www.spring4all.com</span></a></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://alexpdh.com/2017/11/12/java-memory-model-03/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1622,153 +1811,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://alexpdh.com/2017/08/14/interpreter-pattern/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="alexpdh">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/itdog.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="alexpdh's blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="alexpdh's blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/14/interpreter-pattern/" itemprop="url">
-                  Java设计模式（二十四）：解释器模式
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-14T00:09:41+08:00">
-                2017-08-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="解释器模式（Interpreter-Pattern）"><a href="#解释器模式（Interpreter-Pattern）" class="headerlink" title="解释器模式（Interpreter Pattern）"></a>解释器模式（Interpreter Pattern）</h4><p><strong>解释器模式（Interpreter Pattern）:</strong>属于对象的行为模式。给定一个语言，定义它的文法的一种表示，并定义一个解释器，这个解释器使用该表示来解释语言中的句子。</p>
-<hr>
-<h4 id="解释器模式UML图"><a href="#解释器模式UML图" class="headerlink" title="解释器模式UML图"></a>解释器模式UML图</h4><p><img src="http://ojirj5wkr.bkt.clouddn.com/interpreter-pattern.jpg" alt="interpreter-pattern.jpg"><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/14/interpreter-pattern/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1816,7 +1858,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">49</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1834,7 +1876,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
