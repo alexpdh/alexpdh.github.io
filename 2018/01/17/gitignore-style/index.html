@@ -89,18 +89,18 @@
 
 
 <meta name="description" content="简介
- 在日常开发工作中，有些文件需要放到我们本地 git 工作目录中，并且这些文件又不能提交到远程 git 仓库中。例如一些敏感文件。这种情况下每次提交都需要注意，即耽搁时间，git status 的时候看着也不爽。git 考虑到这点，所以有了 .gitignore 文件。只需要在 git 根目录下添加一个叫 .gitirnore 的文件，并且将想要忽略的文件或者规则添加到该文件中，在提交 gi">
+ 在日常开发工作中，有些文件或目录需要放到我们本地 git 工作目录中，并且这些文件又不能提交到远程 git 仓库中。例如一些敏感文件。这种情况下每次提交都需要注意，即耽搁时间，git status 的时候看着也不爽。git 考虑到这点，所以有了 .gitignore 文件。只需要在 git 根目录下添加一个叫 .gitirnore 的文件，并且将想要忽略的文件或者规则添加到该文件中，在提交">
 <meta property="og:type" content="article">
-<meta property="og:title" content="日常开发使用较完整的 gitignore 文件样式">
+<meta property="og:title" content="日常开发常用 .gitignore 文件配置">
 <meta property="og:url" content="http://alexpdh.com/2018/01/17/gitignore-style/index.html">
 <meta property="og:site_name" content="alexpdh's blog">
 <meta property="og:description" content="简介
- 在日常开发工作中，有些文件需要放到我们本地 git 工作目录中，并且这些文件又不能提交到远程 git 仓库中。例如一些敏感文件。这种情况下每次提交都需要注意，即耽搁时间，git status 的时候看着也不爽。git 考虑到这点，所以有了 .gitignore 文件。只需要在 git 根目录下添加一个叫 .gitirnore 的文件，并且将想要忽略的文件或者规则添加到该文件中，在提交 gi">
-<meta property="og:updated_time" content="2018-01-17T14:53:40.299Z">
+ 在日常开发工作中，有些文件或目录需要放到我们本地 git 工作目录中，并且这些文件又不能提交到远程 git 仓库中。例如一些敏感文件。这种情况下每次提交都需要注意，即耽搁时间，git status 的时候看着也不爽。git 考虑到这点，所以有了 .gitignore 文件。只需要在 git 根目录下添加一个叫 .gitirnore 的文件，并且将想要忽略的文件或者规则添加到该文件中，在提交">
+<meta property="og:updated_time" content="2018-01-17T15:03:52.984Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="日常开发使用较完整的 gitignore 文件样式">
+<meta name="twitter:title" content="日常开发常用 .gitignore 文件配置">
 <meta name="twitter:description" content="简介
- 在日常开发工作中，有些文件需要放到我们本地 git 工作目录中，并且这些文件又不能提交到远程 git 仓库中。例如一些敏感文件。这种情况下每次提交都需要注意，即耽搁时间，git status 的时候看着也不爽。git 考虑到这点，所以有了 .gitignore 文件。只需要在 git 根目录下添加一个叫 .gitirnore 的文件，并且将想要忽略的文件或者规则添加到该文件中，在提交 gi">
+ 在日常开发工作中，有些文件或目录需要放到我们本地 git 工作目录中，并且这些文件又不能提交到远程 git 仓库中。例如一些敏感文件。这种情况下每次提交都需要注意，即耽搁时间，git status 的时候看着也不爽。git 考虑到这点，所以有了 .gitignore 文件。只需要在 git 根目录下添加一个叫 .gitirnore 的文件，并且将想要忽略的文件或者规则添加到该文件中，在提交">
 
 
 
@@ -134,7 +134,7 @@
 
 
 
-  <title> 日常开发使用较完整的 gitignore 文件样式 | alexpdh's blog </title>
+  <title> 日常开发常用 .gitignore 文件配置 | alexpdh's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -324,7 +324,7 @@
             
             
               
-                日常开发使用较完整的 gitignore 文件样式
+                日常开发常用 .gitignore 文件配置
               
             
           </h1>
@@ -398,7 +398,7 @@
 
       
         <h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><blockquote>
-<p> 在日常开发工作中，有些文件需要放到我们本地 git 工作目录中，并且这些文件又不能提交到远程 git 仓库中。例如一些敏感文件。这种情况下每次提交都需要注意，即耽搁时间，git status 的时候看着也不爽。git 考虑到这点，所以有了 .gitignore 文件。只需要在 git 根目录下添加一个叫 .gitirnore 的文件，并且将想要忽略的文件或者规则添加到该文件中，在提交 git 远程仓库的时候，git 就会自动忽略该文件中指定的文件。</p>
+<p> 在日常开发工作中，有些文件或目录需要放到我们本地 git 工作目录中，并且这些文件又不能提交到远程 git 仓库中。例如一些敏感文件。这种情况下每次提交都需要注意，即耽搁时间，git status 的时候看着也不爽。git 考虑到这点，所以有了 .gitignore 文件。只需要在 git 根目录下添加一个叫 .gitirnore 的文件，并且将想要忽略的文件或者规则添加到该文件中，在提交 git 远程仓库的时候，git 就会自动忽略该文件中指定的文件。</p>
 </blockquote>
 <a id="more"></a>
 <hr>
